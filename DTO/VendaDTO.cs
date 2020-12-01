@@ -8,6 +8,6 @@ namespace projeto.DTO
         public int Fornecedor { get; set; }
         public int Cliente { get; set; }
         public List<int> Produtos { get; set; }
-        public DateTime DataCompra { get; set; }
+        public string DataCompra { get; set; }
     }
 }

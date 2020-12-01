@@ -7,6 +7,5 @@ namespace projeto.DTO
     {
         public string Nome { get; set; }
         public string CNPJ { get; set; }
-        public List<int> Produtos { get; set; }
     }
 }
