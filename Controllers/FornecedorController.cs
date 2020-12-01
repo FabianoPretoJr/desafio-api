@@ -3,6 +3,7 @@ using projeto.Data;
 using projeto.Models;
 using projeto.DTO;
 using System.Linq;
+using System;
 
 namespace projeto.Controllers
 {
@@ -26,25 +27,106 @@ namespace projeto.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            return Ok();
+            try
+            {
+                var fornecedor = database.fornecedores.First(f => f.Id == id);
+
+                return Ok();
+            }
+            catch(Exception)
+            {
+                Response.StatusCode = 400;
+                return new ObjectResult(new {msg = "Id não encontrado"});
+            }
         }
 
         [HttpPost]
         public IActionResult Post([FromBody]FornecedorDTO fornecedorTemp)
         {
-            return Ok();
+            try
+            {
+                if(fornecedorTemp.Nome.Length <= 1)
+                {
+                    Response.StatusCode = 400;
+                    return new ObjectResult(new {msg = "O nome deve ter mais de um caracter"});
+                }
+
+                if(fornecedorTemp.CNPJ.Length == 18)
+                {
+                    Response.StatusCode = 400;
+                    return new ObjectResult(new {msg = "O CNPJ deve ter mais de 18 caracteres"});
+                }
+
+                Fornecedor fornecedor = new Fornecedor();
+
+                fornecedor.Nome = fornecedorTemp.Nome;
+                fornecedor.CNPJ = fornecedorTemp.CNPJ;
+
+                database.fornecedores.Add(fornecedor);
+                database.SaveChanges();
+
+                Response.StatusCode = 201;
+                return new ObjectResult("");
+            }
+            catch(Exception)
+            {
+                Response.StatusCode = 201;
+                return new ObjectResult(new {msg = "Todos campos devem ser passados"});
+            }
         }
 
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody]FornecedorDTO fornecedorTemp)
         {
-            return Ok();
+            if(id > 0)
+            {
+                try
+                {
+                    var forne = database.fornecedores.First(f => f.Id == id);
+
+                    if(forne != null)
+                    {
+                        forne.Nome = fornecedorTemp.Nome != null ? fornecedorTemp.Nome : forne.Nome;
+                        forne.CNPJ = fornecedorTemp.CNPJ != null ? fornecedorTemp.CNPJ : forne.CNPJ;
+                        database.SaveChanges();
+
+                        return Ok();
+                    }
+                    else
+                    {
+                        Response.StatusCode = 400;
+                        return new ObjectResult(new {msg = "Fornecedor não encontrado"});
+                    }
+                }
+                catch(Exception)
+                {
+                    Response.StatusCode = 400;
+                    return new ObjectResult(new {msg = "Fornecedor não encontrado"});
+                }
+            }
+            else
+            {
+                Response.StatusCode = 400;
+                return new ObjectResult(new {msg = "id de fornecedor está inválido"});
+            }
         } 
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            return Ok();
+            try
+            {
+                var fornecedor = database.fornecedores.First(f => f.Id == id);
+                database.fornecedores.Remove(fornecedor);
+                database.SaveChanges();
+
+                return Ok();
+            }
+            catch(Exception)
+            {
+                Response.StatusCode = 404;
+                return new ObjectResult(new {msg = "Id de fornecedor está inválido"});
+            }
         }
     }
 }

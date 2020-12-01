@@ -29,7 +29,7 @@ namespace projeto.Controllers
         {
             try
             {
-                Cliente cliente = database.clientes.First(c => c.Id == id);
+                var cliente = database.clientes.First(c => c.Id == id);
 
                 return Ok(cliente);
             }
