@@ -9,7 +9,7 @@ using projeto.Data;
 namespace projeto.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201130181113_AdicionandoEntidades")]
+    [Migration("20201201161350_AdicionandoEntidades")]
     partial class AdicionandoEntidades
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -132,7 +132,12 @@ namespace projeto.Migrations
                     b.Property<int>("ProdutoId")
                         .HasColumnType("int");
 
-                    b.HasKey("VendaId", "ProdutoId");
+                    b.Property<int>("FornecedorId")
+                        .HasColumnType("int");
+
+                    b.HasKey("VendaId", "ProdutoId", "FornecedorId");
+
+                    b.HasIndex("FornecedorId");
 
                     b.HasIndex("ProdutoId");
 
@@ -155,6 +160,12 @@ namespace projeto.Migrations
 
             modelBuilder.Entity("projeto.Models.VendaProduto", b =>
                 {
+                    b.HasOne("projeto.Models.Fornecedor", "Fornecedor")
+                        .WithMany("VendasProdutos")
+                        .HasForeignKey("FornecedorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("projeto.Models.Produto", "Produto")
                         .WithMany("VendasProdutos")
                         .HasForeignKey("ProdutoId")

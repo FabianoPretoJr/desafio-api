@@ -13,7 +13,7 @@ namespace projeto.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<VendaProduto>().HasKey(sc => new { sc.VendaId, sc.ProdutoId});
+            modelBuilder.Entity<VendaProduto>().HasKey(sc => new { sc.VendaId, sc.ProdutoId, sc.FornecedorId});
             base.OnModelCreating(modelBuilder);
         }
 

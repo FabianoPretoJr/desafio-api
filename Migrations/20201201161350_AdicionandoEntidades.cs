@@ -92,11 +92,18 @@ namespace projeto.Migrations
                 columns: table => new
                 {
                     VendaId = table.Column<int>(nullable: false),
-                    ProdutoId = table.Column<int>(nullable: false)
+                    ProdutoId = table.Column<int>(nullable: false),
+                    FornecedorId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_vendasProdutos", x => new { x.VendaId, x.ProdutoId });
+                    table.PrimaryKey("PK_vendasProdutos", x => new { x.VendaId, x.ProdutoId, x.FornecedorId });
+                    table.ForeignKey(
+                        name: "FK_vendasProdutos_fornecedores_FornecedorId",
+                        column: x => x.FornecedorId,
+                        principalTable: "fornecedores",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_vendasProdutos_produtos_ProdutoId",
                         column: x => x.ProdutoId,
@@ -120,6 +127,11 @@ namespace projeto.Migrations
                 name: "IX_venda_ClienteId",
                 table: "venda",
                 column: "ClienteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_vendasProdutos_FornecedorId",
+                table: "vendasProdutos",
+                column: "FornecedorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_vendasProdutos_ProdutoId",
