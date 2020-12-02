@@ -139,7 +139,7 @@ namespace projeto.Controllers
                 produto.Nome = produtoTemp.Nome;
                 produto.CodigoProduto = rnd.Next(1000, 9999).ToString();
                 produto.Valor = produtoTemp.Valor;
-                produto.Promocao = produtoTemp.Promocao;
+                produto.Promocao = produtoTemp.Promocao; // Talvez fazer um if pra impedir atribuição de valor ao valorPromocao caso seja false promocao, um ternario resolve
                 produto.ValorPromocao = produtoTemp.ValorPromocao;
                 produto.Categoria = produtoTemp.Categoria;
                 produto.Imagem = produtoTemp.Imagem;
@@ -178,6 +178,7 @@ namespace projeto.Controllers
                         prod.Imagem = produtoTemp.Imagem != null ? produtoTemp.Imagem : prod.Imagem;
                         prod.Quantidade = produtoTemp.Quantidade > 0 ? produtoTemp.Quantidade : prod.Quantidade;
                         prod.Fornecedor = produtoTemp.Fornecedor > 0 ? database.fornecedores.First(f => f.Id == produtoTemp.Fornecedor) : prod.Fornecedor;
+                        database.SaveChanges();
 
                         return Ok();
                     }
