@@ -4,6 +4,7 @@ using projeto.Models;
 using projeto.DTO;
 using System.Linq;
 using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace projeto.Controllers
 {
@@ -20,7 +21,7 @@ namespace projeto.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var fornecedores = database.fornecedores.ToList();
+            var fornecedores = database.fornecedores.Where(f => f.Status == true).Include(f => f.VendasProdutos).ToList();
             return Ok(fornecedores);
         }
 
@@ -29,9 +30,9 @@ namespace projeto.Controllers
         {
             try
             {
-                var fornecedor = database.fornecedores.First(f => f.Id == id);
+                var fornecedor = database.fornecedores.Where(f => f.Status == true).Include(f => f.VendasProdutos).First(f => f.Id == id);
 
-                return Ok();
+                return Ok(fornecedor);
             }
             catch(Exception)
             {
@@ -51,16 +52,17 @@ namespace projeto.Controllers
                     return new ObjectResult(new {msg = "O nome deve ter mais de um caracter"});
                 }
 
-                if(fornecedorTemp.CNPJ.Length == 18)
+                if(fornecedorTemp.CNPJ.Length != 18)
                 {
                     Response.StatusCode = 400;
-                    return new ObjectResult(new {msg = "O CNPJ deve ter mais de 18 caracteres"});
+                    return new ObjectResult(new {msg = "O CNPJ deve ter 18 caracteres"});
                 }
 
                 Fornecedor fornecedor = new Fornecedor();
 
                 fornecedor.Nome = fornecedorTemp.Nome;
                 fornecedor.CNPJ = fornecedorTemp.CNPJ;
+                fornecedor.Status = true;
 
                 database.fornecedores.Add(fornecedor);
                 database.SaveChanges();
@@ -70,7 +72,7 @@ namespace projeto.Controllers
             }
             catch(Exception)
             {
-                Response.StatusCode = 201;
+                Response.StatusCode = 400;
                 return new ObjectResult(new {msg = "Todos campos devem ser passados"});
             }
         }
@@ -117,7 +119,7 @@ namespace projeto.Controllers
             try
             {
                 var fornecedor = database.fornecedores.First(f => f.Id == id);
-                database.fornecedores.Remove(fornecedor);
+                fornecedor.Status = false;
                 database.SaveChanges();
 
                 return Ok();

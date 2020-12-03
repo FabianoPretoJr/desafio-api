@@ -4,6 +4,7 @@ using projeto.Models;
 using projeto.DTO;
 using System.Linq;
 using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace projeto.Controllers
 {
@@ -20,7 +21,7 @@ namespace projeto.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var produtos = database.produtos.ToList();
+            var produtos = database.produtos.Include(p => p.Fornecedor).Include(p => p.VendasProdutos).ToList();
             return Ok(produtos);
         }
 
@@ -29,7 +30,7 @@ namespace projeto.Controllers
         {
             try
             {
-                var produto = database.produtos.First(p => p.Id == id);
+                var produto = database.produtos.Where(p => p.Status == true).Include(p => p.Fornecedor).Include(p => p.VendasProdutos).First(p => p.Id == id);
                 
                 return Ok(produto);
             }
@@ -43,14 +44,14 @@ namespace projeto.Controllers
         [HttpGet("asc")]
         public IActionResult GetByAsc()
         {
-            var produtos = database.produtos.OrderBy(p => p.Nome).ToList();
+            var produtos = database.produtos.Where(p => p.Status == true).OrderBy(p => p.Nome).ToList();
             return Ok(produtos);
         }
 
         [HttpGet("desc")]
         public IActionResult GetByDesc()
         {
-            var produtos = database.produtos.OrderByDescending(p => p.Nome).ToList();
+            var produtos = database.produtos.Where(p => p.Status == true).OrderByDescending(p => p.Nome).ToList();
             return Ok(produtos);
         }
 
@@ -59,7 +60,7 @@ namespace projeto.Controllers
         {
             try
             {
-                var produto = database.produtos.First(p => p.Nome.ToUpper() == nome.ToUpper());
+                var produto = database.produtos.Where(p => p.Status == true).First(p => p.Nome.ToUpper() == nome.ToUpper());
 
                 return Ok(produto);
             }
@@ -108,7 +109,7 @@ namespace projeto.Controllers
                 if(produtoTemp.Quantidade <= 0)
                 {
                     Response.StatusCode = 400;
-                    return new ObjectResult(new {msg = "A quantidade deve ser pelo menos maior que 0 (zero)"});
+                    return new ObjectResult(new {msg = "A quantidade deve ser pelo menos maior do que 0 (zero)"});
                 }
 
                 if(produtoTemp.Fornecedor <= 0)
@@ -145,6 +146,7 @@ namespace projeto.Controllers
                 produto.Imagem = produtoTemp.Imagem;
                 produto.Quantidade = produtoTemp.Quantidade;
                 produto.Fornecedor = database.fornecedores.First(f => f.Id == produtoTemp.Fornecedor);
+                produto.Status = true;
 
                 database.produtos.Add(produto);
                 database.SaveChanges();
@@ -172,7 +174,7 @@ namespace projeto.Controllers
                     {
                         prod.Nome = produtoTemp.Nome != null ? produtoTemp.Nome : prod.Nome;
                         prod.Valor = produtoTemp.Valor > 0 ? produtoTemp.Valor : prod.Valor;
-                        prod.Promocao = produtoTemp.Promocao ? produtoTemp.Promocao : prod.Promocao;
+                        prod.Promocao = produtoTemp.Promocao.ToString().Equals("true") ? prod.Promocao : produtoTemp.Promocao;
                         prod.ValorPromocao = produtoTemp.ValorPromocao > 0 ? produtoTemp.ValorPromocao : prod.ValorPromocao;
                         prod.Categoria = produtoTemp.Categoria != null ? produtoTemp.Categoria : prod.Categoria;
                         prod.Imagem = produtoTemp.Imagem != null ? produtoTemp.Imagem : prod.Imagem;
@@ -207,7 +209,7 @@ namespace projeto.Controllers
             try
             {
                 var produto = database.produtos.First(p => p.Id == id);
-                database.produtos.Remove(produto);
+                produto.Status = false;
                 database.SaveChanges();
 
                 return Ok();

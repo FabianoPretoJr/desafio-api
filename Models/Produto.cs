@@ -14,6 +14,7 @@ namespace projeto.Models
         public string Imagem { get; set; }
         public int Quantidade { get; set; }
         public Fornecedor Fornecedor { get; set; }
+        public bool Status { get; set; }
         public ICollection<VendaProduto> VendasProdutos { get; set; }
     }
 }

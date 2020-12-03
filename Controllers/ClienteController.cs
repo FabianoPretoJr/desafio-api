@@ -20,7 +20,7 @@ namespace projeto.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var clientes = database.clientes.ToList();
+            var clientes = database.clientes.Where(c => c.Status == true).ToList();
             return Ok(clientes);
         }
 
@@ -29,7 +29,7 @@ namespace projeto.Controllers
         {
             try
             {
-                var cliente = database.clientes.First(c => c.Id == id);
+                var cliente = database.clientes.Where(c => c.Status == true).First(c => c.Id == id);
 
                 return Ok(cliente);
             }
@@ -80,6 +80,7 @@ namespace projeto.Controllers
                 cliente.Senha = clienteTemp.Senha;
                 cliente.Documento = clienteTemp.Documento;
                 cliente.DataCadastro = DateTime.Now;
+                cliente.Status = true;
                 
                 database.clientes.Add(cliente);
                 database.SaveChanges();
@@ -138,7 +139,7 @@ namespace projeto.Controllers
             try
             {
                 var cliente = database.clientes.First(c => c.Id == id);
-                database.clientes.Remove(cliente);
+                cliente.Status = false;
                 database.SaveChanges();
 
                 return Ok();

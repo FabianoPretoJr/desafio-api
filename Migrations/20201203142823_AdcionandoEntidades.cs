@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace projeto.Migrations
 {
-    public partial class AdicionandoEntidades : Migration
+    public partial class AdcionandoEntidades : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -18,7 +18,8 @@ namespace projeto.Migrations
                     Email = table.Column<string>(nullable: true),
                     Senha = table.Column<string>(nullable: true),
                     Documento = table.Column<string>(nullable: true),
-                    DataCadastro = table.Column<DateTime>(nullable: false)
+                    DataCadastro = table.Column<DateTime>(nullable: false),
+                    Status = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -32,7 +33,8 @@ namespace projeto.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Nome = table.Column<string>(nullable: true),
-                    CNPJ = table.Column<string>(nullable: true)
+                    CNPJ = table.Column<string>(nullable: true),
+                    Status = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -47,7 +49,8 @@ namespace projeto.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     ClienteId = table.Column<int>(nullable: true),
                     TotalCompra = table.Column<decimal>(nullable: false),
-                    DataCompra = table.Column<DateTime>(nullable: false)
+                    DataCompra = table.Column<DateTime>(nullable: false),
+                    Status = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -69,12 +72,13 @@ namespace projeto.Migrations
                     Nome = table.Column<string>(nullable: true),
                     CodigoProduto = table.Column<string>(nullable: true),
                     Valor = table.Column<decimal>(nullable: false),
-                    Promocao = table.Column<bool>(nullable: false),
-                    ValorPromocao = table.Column<decimal>(nullable: false),
+                    Promocao = table.Column<bool>(nullable: true),
+                    ValorPromocao = table.Column<decimal>(nullable: true),
                     Categoria = table.Column<string>(nullable: true),
                     Imagem = table.Column<string>(nullable: true),
                     Quantidade = table.Column<int>(nullable: false),
-                    FornecedorId = table.Column<int>(nullable: true)
+                    FornecedorId = table.Column<int>(nullable: true),
+                    Status = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {

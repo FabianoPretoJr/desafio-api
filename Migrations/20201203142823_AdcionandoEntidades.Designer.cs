@@ -9,8 +9,8 @@ using projeto.Data;
 namespace projeto.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201201161350_AdicionandoEntidades")]
-    partial class AdicionandoEntidades
+    [Migration("20201203142823_AdcionandoEntidades")]
+    partial class AdcionandoEntidades
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -40,6 +40,9 @@ namespace projeto.Migrations
                     b.Property<string>("Senha")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<bool>("Status")
+                        .HasColumnType("tinyint(1)");
+
                     b.HasKey("Id");
 
                     b.ToTable("clientes");
@@ -56,6 +59,9 @@ namespace projeto.Migrations
 
                     b.Property<string>("Nome")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("tinyint(1)");
 
                     b.HasKey("Id");
 
@@ -83,16 +89,19 @@ namespace projeto.Migrations
                     b.Property<string>("Nome")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<bool>("Promocao")
+                    b.Property<bool?>("Promocao")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<int>("Quantidade")
                         .HasColumnType("int");
 
+                    b.Property<bool>("Status")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<decimal>("Valor")
                         .HasColumnType("decimal(65,30)");
 
-                    b.Property<decimal>("ValorPromocao")
+                    b.Property<decimal?>("ValorPromocao")
                         .HasColumnType("decimal(65,30)");
 
                     b.HasKey("Id");
@@ -113,6 +122,9 @@ namespace projeto.Migrations
 
                     b.Property<DateTime>("DataCompra")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<decimal>("TotalCompra")
                         .HasColumnType("decimal(65,30)");
