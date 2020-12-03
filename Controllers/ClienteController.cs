@@ -40,6 +40,35 @@ namespace projeto.Controllers
             }
         }
 
+        [HttpGet("asc")]
+        public IActionResult GetByAsc()
+        {
+            var clientes = database.clientes.Where(c => c.Status == true).OrderBy(c => c.Nome).ToList();
+            return Ok(clientes);
+        }
+
+        [HttpGet("desc")]
+        public IActionResult GetByDesc()
+        {
+            var clientes = database.clientes.Where(c => c.Status == true).OrderByDescending(c => c.Nome).ToList();
+            return Ok(clientes);
+        }
+
+        [HttpGet("nome/{nome}")]
+        public IActionResult GetByNome(string nome)
+        {
+            try
+            {
+                var cliente = database.clientes.Where(c => c.Status == true).First(c => c.Nome.ToUpper() == nome.ToUpper());
+                return Ok(cliente);
+            }
+            catch(Exception)
+            {
+                Response.StatusCode = 400;
+                return new ObjectResult(new {msg = "Nome não encontrado"});
+            }
+        }
+
         [HttpPost]
         public IActionResult Post([FromBody]ClienteDTO clienteTemp)
         {

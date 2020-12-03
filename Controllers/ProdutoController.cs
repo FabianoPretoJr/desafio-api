@@ -21,7 +21,10 @@ namespace projeto.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var produtos = database.produtos.Include(p => p.Fornecedor).Include(p => p.VendasProdutos).ToList();
+            var produtos = database.produtos.Where(p => p.Status == true)
+                                            .Include(p => p.Fornecedor)
+                                            .Include(p => p.VendasProdutos)
+                                            .ToList();
             return Ok(produtos);
         }
 
@@ -30,7 +33,10 @@ namespace projeto.Controllers
         {
             try
             {
-                var produto = database.produtos.Where(p => p.Status == true).Include(p => p.Fornecedor).Include(p => p.VendasProdutos).First(p => p.Id == id);
+                var produto = database.produtos.Where(p => p.Status == true)
+                                               .Include(p => p.Fornecedor)
+                                               .Include(p => p.VendasProdutos)
+                                               .First(p => p.Id == id);
                 
                 return Ok(produto);
             }
@@ -44,14 +50,22 @@ namespace projeto.Controllers
         [HttpGet("asc")]
         public IActionResult GetByAsc()
         {
-            var produtos = database.produtos.Where(p => p.Status == true).OrderBy(p => p.Nome).ToList();
+            var produtos = database.produtos.Where(p => p.Status == true)
+                                            .Include(p => p.Fornecedor)
+                                            .Include(p => p.VendasProdutos)
+                                            .OrderBy(p => p.Nome)
+                                            .ToList();
             return Ok(produtos);
         }
 
         [HttpGet("desc")]
         public IActionResult GetByDesc()
         {
-            var produtos = database.produtos.Where(p => p.Status == true).OrderByDescending(p => p.Nome).ToList();
+            var produtos = database.produtos.Where(p => p.Status == true)
+                                            .Include(p => p.Fornecedor)
+                                            .Include(p => p.VendasProdutos)
+                                            .OrderByDescending(p => p.Nome)
+                                            .ToList();
             return Ok(produtos);
         }
 
@@ -60,7 +74,10 @@ namespace projeto.Controllers
         {
             try
             {
-                var produto = database.produtos.Where(p => p.Status == true).First(p => p.Nome.ToUpper() == nome.ToUpper());
+                var produto = database.produtos.Where(p => p.Status == true)
+                                               .Include(p => p.Fornecedor)
+                                               .Include(p => p.VendasProdutos)
+                                               .First(p => p.Nome.ToUpper() == nome.ToUpper());
 
                 return Ok(produto);
             }

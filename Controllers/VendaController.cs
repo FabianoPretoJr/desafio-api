@@ -21,7 +21,12 @@ namespace projeto.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var vendas = database.venda.Where(v => v.Status == true).Include(v => v.Cliente).Include(v => v.VendasProdutos).ThenInclude(p => p.Produto).ThenInclude(p => p.Fornecedor).ToList();
+            var vendas = database.venda.Where(v => v.Status == true)
+                                       .Include(v => v.Cliente)
+                                       .Include(v => v.VendasProdutos)
+                                       .ThenInclude(v => v.Produto)
+                                       .ThenInclude(v => v.Fornecedor)
+                                       .ToList();
             return Ok(vendas);
         }
 
@@ -30,7 +35,12 @@ namespace projeto.Controllers
         {
             try
             {
-                var venda = database.venda.Where(v => v.Status == true).Include(v => v.Cliente).Include(v => v.VendasProdutos).ThenInclude(p => p.Produto).ThenInclude(p => p.Fornecedor).First(v => v.Id == id);
+                var venda = database.venda.Where(v => v.Status == true)
+                                          .Include(v => v.Cliente)
+                                          .Include(v => v.VendasProdutos)
+                                          .ThenInclude(v => v.Produto)
+                                          .ThenInclude(v => v.Fornecedor)
+                                          .First(v => v.Id == id);
 
                 return Ok(venda);
             }
@@ -38,6 +48,53 @@ namespace projeto.Controllers
             {
                 Response.StatusCode = 400;
                 return new ObjectResult(new {msg = "Id não encontrado"});
+            }
+        }
+
+        [HttpGet("asc")]
+        public IActionResult GetByAsc()
+        {
+            var vendas = database.venda.Where(v => v.Status == true)
+                                       .Include(v => v.Cliente)
+                                       .Include(v => v.VendasProdutos)
+                                       .ThenInclude(v => v.Produto)
+                                       .ThenInclude(v => v.Fornecedor)
+                                       .OrderBy(v => v.DataCompra)
+                                       .ToList();
+            return Ok(vendas);
+        }
+
+        [HttpGet("desc")]
+        public IActionResult GetByDesc()
+        {
+            var venda = database.venda.Where(v => v.Status == true)
+                                      .Include(v => v.Cliente)
+                                      .Include(v => v.VendasProdutos)
+                                      .ThenInclude(v => v.Produto)
+                                      .ThenInclude(v => v.Fornecedor)
+                                      .OrderByDescending(v => v.DataCompra)
+                                      .ToList();
+            return Ok(venda);
+        }
+
+        [HttpGet("data/{data}")]
+        public IActionResult GetByData(string data)
+        {
+            data = data.Replace("%2F", "/");
+            try
+            {
+                var venda = database.venda.Where(v => v.Status == true)
+                                          .Include(v => v.Cliente)
+                                          .Include(v => v.VendasProdutos)
+                                          .ThenInclude(v => v.Produto)
+                                          .ThenInclude(v => v.Fornecedor)
+                                          .First(v => v.DataCompra == DateTime.ParseExact(data, "dd/MM/yyyy", null));
+                return Ok(venda);
+            }
+            catch(Exception)
+            {
+                Response.StatusCode = 400;
+                return new ObjectResult(new {msg = "Data não encontrada"});
             }
         }
 

@@ -41,6 +41,35 @@ namespace projeto.Controllers
             }
         }
 
+        [HttpGet("asc")]
+        public IActionResult GetByAsc()
+        {
+            var fornecedores = database.fornecedores.Where(f => f.Status == true).Include(f => f.VendasProdutos).OrderBy(f => f.Nome).ToList();
+            return Ok(fornecedores);
+        }
+
+        [HttpGet("desc")]
+        public IActionResult GetByDesc()
+        {
+            var fornecedores = database.fornecedores.Where(f => f.Status == true).Include(f => f.VendasProdutos).OrderByDescending(f => f.Nome).ToList();
+            return Ok(fornecedores);
+        }
+
+        [HttpGet("nome/{nome}")]
+        public IActionResult GetByNome(string nome)
+        {
+            try
+            {
+                var fornecedor = database.fornecedores.Where(f => f.Status == true).Include(f => f.VendasProdutos).First(f => f.Nome.ToUpper() == nome.ToUpper());
+                return Ok(fornecedor);
+            }
+            catch(Exception)
+            {
+                Response.StatusCode = 400;
+                return new ObjectResult(new {msg = "Nome não encontrado"});
+            }
+        }
+
         [HttpPost]
         public IActionResult Post([FromBody]FornecedorDTO fornecedorTemp)
         {
