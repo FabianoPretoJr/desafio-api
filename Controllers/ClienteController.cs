@@ -4,6 +4,8 @@ using projeto.Models;
 using projeto.DTO;
 using System.Linq;
 using System;
+using projeto.Container;
+using System.Collections.Generic;
 
 namespace projeto.Controllers
 {
@@ -12,16 +14,37 @@ namespace projeto.Controllers
     public class ClienteController : ControllerBase
     {
         private readonly ApplicationDbContext database;
+        private HATEOAS.HATEOAS HATEOAS;
         public ClienteController(ApplicationDbContext database)
         {
             this.database = database;
+            HATEOAS = new HATEOAS.HATEOAS("localhost:5001/api/cliente");
+            HATEOAS.AddAction("GET_INFO", "GET");
+            HATEOAS.AddAction("GET_INFO_BY_ASC", "GET");
+            HATEOAS.AddAction("GET_INFO_BY_DESC", "GET");
+            HATEOAS.AddAction("GET_INFO_BY_NOME", "GET");
+            HATEOAS.AddAction("EDIT_PRODUCT", "PUT");
+            HATEOAS.AddAction("DELETE_PRODUCT", "DELETE");
         }
 
         [HttpGet]
         public IActionResult Get()
         {
             var clientes = database.clientes.Where(c => c.Status == true).ToList();
-            return Ok(clientes);
+
+            List<ClienteContainer> clientesHATEOAS = new List<ClienteContainer>();
+            foreach(var cliente in clientes)
+            {
+                ClienteContainer clienteHATEOAS = new ClienteContainer();
+                clienteHATEOAS.cliente = cliente;
+                clienteHATEOAS.links = HATEOAS.GetActions(cliente.Id.ToString());
+                clienteHATEOAS.linksByAsc = HATEOAS.GetActions("asc");
+                clienteHATEOAS.linksByDesc = HATEOAS.GetActions("desc");
+                clienteHATEOAS.linksByNome = HATEOAS.GetActions("nome" + cliente.Nome);
+                clientesHATEOAS.Add(clienteHATEOAS);
+            }
+
+            return Ok(clientesHATEOAS);
         }
 
         [HttpGet("{id}")]
@@ -31,7 +54,11 @@ namespace projeto.Controllers
             {
                 var cliente = database.clientes.Where(c => c.Status == true).First(c => c.Id == id);
 
-                return Ok(cliente);
+                ClienteContainer clienteHATEOAS = new ClienteContainer();
+                clienteHATEOAS.cliente = cliente;
+                clienteHATEOAS.links = HATEOAS.GetActions(cliente.Id.ToString());
+
+                return Ok(clienteHATEOAS);
             }
             catch(Exception)
             {
@@ -44,14 +71,34 @@ namespace projeto.Controllers
         public IActionResult GetByAsc()
         {
             var clientes = database.clientes.Where(c => c.Status == true).OrderBy(c => c.Nome).ToList();
-            return Ok(clientes);
+
+            List<ClienteContainer> clientesHATEOAS = new List<ClienteContainer>();
+            foreach(var cliente in clientes)
+            {
+                ClienteContainer clienteHATEOAS = new ClienteContainer();
+                clienteHATEOAS.cliente = cliente;
+                clienteHATEOAS.links = HATEOAS.GetActions(cliente.Id.ToString());
+                clientesHATEOAS.Add(clienteHATEOAS);
+            }
+
+            return Ok(clientesHATEOAS);
         }
 
         [HttpGet("desc")]
         public IActionResult GetByDesc()
         {
             var clientes = database.clientes.Where(c => c.Status == true).OrderByDescending(c => c.Nome).ToList();
-            return Ok(clientes);
+            
+            List<ClienteContainer> clientesHATEOAS = new List<ClienteContainer>();
+            foreach(var cliente in clientes)
+            {
+                ClienteContainer clienteHATEOAS = new ClienteContainer();
+                clienteHATEOAS.cliente = cliente;
+                clienteHATEOAS.links = HATEOAS.GetActions(cliente.Id.ToString());
+                clientesHATEOAS.Add(clienteHATEOAS);
+            }
+
+            return Ok(clientesHATEOAS);
         }
 
         [HttpGet("nome/{nome}")]
@@ -60,7 +107,12 @@ namespace projeto.Controllers
             try
             {
                 var cliente = database.clientes.Where(c => c.Status == true).First(c => c.Nome.ToUpper() == nome.ToUpper());
-                return Ok(cliente);
+                
+                ClienteContainer clienteHATEOAS = new ClienteContainer();
+                clienteHATEOAS.cliente = cliente;
+                clienteHATEOAS.links = HATEOAS.GetActions(cliente.Id.ToString());
+
+                return Ok(clienteHATEOAS);
             }
             catch(Exception)
             {

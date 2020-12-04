@@ -13,9 +13,14 @@ namespace projeto.Controllers
     public class ProdutoController : ControllerBase
     {
         private readonly ApplicationDbContext database;
+        private HATEOAS.HATEOAS HATEOAS;
         public ProdutoController(ApplicationDbContext database)
         {
             this.database = database;
+            HATEOAS = new HATEOAS.HATEOAS("localhost:5001/api/produto");
+            HATEOAS.AddAction("GET_INFO", "GET");
+            HATEOAS.AddAction("EDIT_PRODUCT", "PUT");
+            HATEOAS.AddAction("DELETE_PRODUCT", "DELETE");
         }   
 
         [HttpGet]
