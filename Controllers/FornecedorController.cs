@@ -5,6 +5,8 @@ using projeto.DTO;
 using System.Linq;
 using System;
 using Microsoft.EntityFrameworkCore;
+using projeto.Container;
+using System.Collections.Generic;
 
 namespace projeto.Controllers
 {
@@ -19,6 +21,7 @@ namespace projeto.Controllers
             this.database = database;
             HATEOAS = new HATEOAS.HATEOAS("localhost:5001/api/fornecedor");
             HATEOAS.AddAction("GET_INFO", "GET");
+            HATEOAS.AddAction("GET_INFO_BY_NOME", "GET");
             HATEOAS.AddAction("EDIT_PRODUCT", "PUT");
             HATEOAS.AddAction("DELETE_PRODUCT", "DELETE");
         }
@@ -27,7 +30,23 @@ namespace projeto.Controllers
         public IActionResult Get()
         {
             var fornecedores = database.fornecedores.Where(f => f.Status == true).Include(f => f.VendasProdutos).ToList();
-            return Ok(fornecedores);
+
+            List<FornecedorContainer> fornecedoresHATEOAS = new List<FornecedorContainer>();
+            foreach(var fornecedor in fornecedores)
+            {
+                List<string> formatoLinks = new List<string>();
+                formatoLinks.Add(fornecedor.Id.ToString());
+                formatoLinks.Add("nome/" + fornecedor.Nome.Replace(" ", "%20"));
+                formatoLinks.Add(fornecedor.Id.ToString());
+                formatoLinks.Add(fornecedor.Id.ToString());
+
+                FornecedorContainer fornecedorHATEOAS = new FornecedorContainer();
+                fornecedorHATEOAS.fornecedor = fornecedor;
+                fornecedorHATEOAS.links = HATEOAS.GetActions(formatoLinks);
+                fornecedoresHATEOAS.Add(fornecedorHATEOAS);
+            }
+
+            return Ok(fornecedoresHATEOAS);
         }
 
         [HttpGet("{id}")]
@@ -37,7 +56,17 @@ namespace projeto.Controllers
             {
                 var fornecedor = database.fornecedores.Where(f => f.Status == true).Include(f => f.VendasProdutos).First(f => f.Id == id);
 
-                return Ok(fornecedor);
+                List<string> formatoLinks = new List<string>();
+                formatoLinks.Add(fornecedor.Id.ToString());
+                formatoLinks.Add("nome/" + fornecedor.Nome.Replace(" ", "%20"));
+                formatoLinks.Add(fornecedor.Id.ToString());
+                formatoLinks.Add(fornecedor.Id.ToString());
+
+                FornecedorContainer fornecedorHATEOAS = new FornecedorContainer();
+                fornecedorHATEOAS.fornecedor = fornecedor;
+                fornecedorHATEOAS.links = HATEOAS.GetActions(formatoLinks);
+
+                return Ok(fornecedorHATEOAS);
             }
             catch(Exception)
             {
@@ -50,14 +79,46 @@ namespace projeto.Controllers
         public IActionResult GetByAsc()
         {
             var fornecedores = database.fornecedores.Where(f => f.Status == true).Include(f => f.VendasProdutos).OrderBy(f => f.Nome).ToList();
-            return Ok(fornecedores);
+            
+            List<FornecedorContainer> fornecedoresHATEOAS = new List<FornecedorContainer>();
+            foreach(var fornecedor in fornecedores)
+            {
+                List<string> formatoLinks = new List<string>();
+                formatoLinks.Add(fornecedor.Id.ToString());
+                formatoLinks.Add("nome/" + fornecedor.Nome.Replace(" ", "%20"));
+                formatoLinks.Add(fornecedor.Id.ToString());
+                formatoLinks.Add(fornecedor.Id.ToString());
+
+                FornecedorContainer fornecedorHATEOAS = new FornecedorContainer();
+                fornecedorHATEOAS.fornecedor = fornecedor;
+                fornecedorHATEOAS.links = HATEOAS.GetActions(formatoLinks);
+                fornecedoresHATEOAS.Add(fornecedorHATEOAS);
+            }
+
+            return Ok(fornecedoresHATEOAS);
         }
 
         [HttpGet("desc")]
         public IActionResult GetByDesc()
         {
             var fornecedores = database.fornecedores.Where(f => f.Status == true).Include(f => f.VendasProdutos).OrderByDescending(f => f.Nome).ToList();
-            return Ok(fornecedores);
+            
+            List<FornecedorContainer> fornecedoresHATEOAS = new List<FornecedorContainer>();
+            foreach(var fornecedor in fornecedores)
+            {
+                List<string> formatoLinks = new List<string>();
+                formatoLinks.Add(fornecedor.Id.ToString());
+                formatoLinks.Add("nome/" + fornecedor.Nome.Replace(" ", "%20"));
+                formatoLinks.Add(fornecedor.Id.ToString());
+                formatoLinks.Add(fornecedor.Id.ToString());
+
+                FornecedorContainer fornecedorHATEOAS = new FornecedorContainer();
+                fornecedorHATEOAS.fornecedor = fornecedor;
+                fornecedorHATEOAS.links = HATEOAS.GetActions(formatoLinks);
+                fornecedoresHATEOAS.Add(fornecedorHATEOAS);
+            }
+
+            return Ok(fornecedoresHATEOAS);
         }
 
         [HttpGet("nome/{nome}")]
@@ -66,7 +127,18 @@ namespace projeto.Controllers
             try
             {
                 var fornecedor = database.fornecedores.Where(f => f.Status == true).Include(f => f.VendasProdutos).First(f => f.Nome.ToUpper() == nome.ToUpper());
-                return Ok(fornecedor);
+                
+                List<string> formatoLinks = new List<string>();
+                formatoLinks.Add(fornecedor.Id.ToString());
+                formatoLinks.Add("nome/" + fornecedor.Nome.Replace(" ", "%20"));
+                formatoLinks.Add(fornecedor.Id.ToString());
+                formatoLinks.Add(fornecedor.Id.ToString());
+
+                FornecedorContainer fornecedorHATEOAS = new FornecedorContainer();
+                fornecedorHATEOAS.fornecedor = fornecedor;
+                fornecedorHATEOAS.links = HATEOAS.GetActions(formatoLinks);
+
+                return Ok(fornecedorHATEOAS);
             }
             catch(Exception)
             {

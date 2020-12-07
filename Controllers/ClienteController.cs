@@ -20,8 +20,6 @@ namespace projeto.Controllers
             this.database = database;
             HATEOAS = new HATEOAS.HATEOAS("localhost:5001/api/cliente");
             HATEOAS.AddAction("GET_INFO", "GET");
-            HATEOAS.AddAction("GET_INFO_BY_ASC", "GET");
-            HATEOAS.AddAction("GET_INFO_BY_DESC", "GET");
             HATEOAS.AddAction("GET_INFO_BY_NOME", "GET");
             HATEOAS.AddAction("EDIT_PRODUCT", "PUT");
             HATEOAS.AddAction("DELETE_PRODUCT", "DELETE");
@@ -35,12 +33,15 @@ namespace projeto.Controllers
             List<ClienteContainer> clientesHATEOAS = new List<ClienteContainer>();
             foreach(var cliente in clientes)
             {
+                List<string> formatoLinks = new List<string>();
+                formatoLinks.Add(cliente.Id.ToString());
+                formatoLinks.Add("nome/" + cliente.Nome.Replace(" ", "%20"));
+                formatoLinks.Add(cliente.Id.ToString());
+                formatoLinks.Add(cliente.Id.ToString());
+
                 ClienteContainer clienteHATEOAS = new ClienteContainer();
                 clienteHATEOAS.cliente = cliente;
-                clienteHATEOAS.links = HATEOAS.GetActions(cliente.Id.ToString());
-                clienteHATEOAS.linksByAsc = HATEOAS.GetActions("asc");
-                clienteHATEOAS.linksByDesc = HATEOAS.GetActions("desc");
-                clienteHATEOAS.linksByNome = HATEOAS.GetActions("nome" + cliente.Nome);
+                clienteHATEOAS.links = HATEOAS.GetActions(formatoLinks);
                 clientesHATEOAS.Add(clienteHATEOAS);
             }
 
@@ -54,9 +55,15 @@ namespace projeto.Controllers
             {
                 var cliente = database.clientes.Where(c => c.Status == true).First(c => c.Id == id);
 
+                List<string> formatoLinks = new List<string>();
+                formatoLinks.Add(cliente.Id.ToString());
+                formatoLinks.Add("nome/" + cliente.Nome.Replace(" ", "%20"));
+                formatoLinks.Add(cliente.Id.ToString());
+                formatoLinks.Add(cliente.Id.ToString());
+
                 ClienteContainer clienteHATEOAS = new ClienteContainer();
                 clienteHATEOAS.cliente = cliente;
-                clienteHATEOAS.links = HATEOAS.GetActions(cliente.Id.ToString());
+                clienteHATEOAS.links = HATEOAS.GetActions(formatoLinks);
 
                 return Ok(clienteHATEOAS);
             }
@@ -75,9 +82,15 @@ namespace projeto.Controllers
             List<ClienteContainer> clientesHATEOAS = new List<ClienteContainer>();
             foreach(var cliente in clientes)
             {
+                List<string> formatoLinks = new List<string>();
+                formatoLinks.Add(cliente.Id.ToString());
+                formatoLinks.Add("nome/" + cliente.Nome.Replace(" ", "%20"));
+                formatoLinks.Add(cliente.Id.ToString());
+                formatoLinks.Add(cliente.Id.ToString());
+
                 ClienteContainer clienteHATEOAS = new ClienteContainer();
                 clienteHATEOAS.cliente = cliente;
-                clienteHATEOAS.links = HATEOAS.GetActions(cliente.Id.ToString());
+                clienteHATEOAS.links = HATEOAS.GetActions(formatoLinks);
                 clientesHATEOAS.Add(clienteHATEOAS);
             }
 
@@ -92,9 +105,15 @@ namespace projeto.Controllers
             List<ClienteContainer> clientesHATEOAS = new List<ClienteContainer>();
             foreach(var cliente in clientes)
             {
+                List<string> formatoLinks = new List<string>();
+                formatoLinks.Add(cliente.Id.ToString());
+                formatoLinks.Add("nome/" + cliente.Nome.Replace(" ", "%20"));
+                formatoLinks.Add(cliente.Id.ToString());
+                formatoLinks.Add(cliente.Id.ToString());
+
                 ClienteContainer clienteHATEOAS = new ClienteContainer();
                 clienteHATEOAS.cliente = cliente;
-                clienteHATEOAS.links = HATEOAS.GetActions(cliente.Id.ToString());
+                clienteHATEOAS.links = HATEOAS.GetActions(formatoLinks);
                 clientesHATEOAS.Add(clienteHATEOAS);
             }
 
@@ -107,10 +126,16 @@ namespace projeto.Controllers
             try
             {
                 var cliente = database.clientes.Where(c => c.Status == true).First(c => c.Nome.ToUpper() == nome.ToUpper());
+
+                List<string> formatoLinks = new List<string>();
+                formatoLinks.Add(cliente.Id.ToString());
+                formatoLinks.Add("nome/" + cliente.Nome.Replace(" ", "%20"));
+                formatoLinks.Add(cliente.Id.ToString());
+                formatoLinks.Add(cliente.Id.ToString());
                 
                 ClienteContainer clienteHATEOAS = new ClienteContainer();
                 clienteHATEOAS.cliente = cliente;
-                clienteHATEOAS.links = HATEOAS.GetActions(cliente.Id.ToString());
+                clienteHATEOAS.links = HATEOAS.GetActions(formatoLinks);
 
                 return Ok(clienteHATEOAS);
             }

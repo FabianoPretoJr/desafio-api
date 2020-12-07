@@ -24,7 +24,7 @@ namespace projeto.HATEOAS
             actions.Add(new Link(this.protocol + this.url, rel, method));
         }
 
-        public Link[] GetActions(string sufix)
+        public Link[] GetActions(List<string> sufix)
         {
             Link[] tempLinks = new Link[actions.Count];
 
@@ -33,9 +33,9 @@ namespace projeto.HATEOAS
                 tempLinks[i] = new Link(actions[i].href, actions[i].rel, actions[i].method);
             }
 
-            foreach(var link in tempLinks)
+            for(int i = 0; i < tempLinks.Length; i++)
             {
-                link.href = link.href + "/" + sufix;
+                tempLinks[i].href = tempLinks[i].href + "/" + sufix[i];
             }
 
             return tempLinks;

@@ -5,6 +5,8 @@ using projeto.DTO;
 using System.Linq;
 using System;
 using Microsoft.EntityFrameworkCore;
+using projeto.Container;
+using System.Collections.Generic;
 
 namespace projeto.Controllers
 {
@@ -19,6 +21,7 @@ namespace projeto.Controllers
             this.database = database;
             HATEOAS = new HATEOAS.HATEOAS("localhost:5001/api/produto");
             HATEOAS.AddAction("GET_INFO", "GET");
+            HATEOAS.AddAction("GET_INFO_BY_NOME", "GET");
             HATEOAS.AddAction("EDIT_PRODUCT", "PUT");
             HATEOAS.AddAction("DELETE_PRODUCT", "DELETE");
         }   
@@ -30,7 +33,23 @@ namespace projeto.Controllers
                                             .Include(p => p.Fornecedor)
                                             .Include(p => p.VendasProdutos)
                                             .ToList();
-            return Ok(produtos);
+            
+            List<ProdutoContainer> produtosHATEOAS = new List<ProdutoContainer>();
+            foreach(var produto in produtos)
+            {
+                List<string> formatoLinks = new List<string>();
+                formatoLinks.Add(produto.Id.ToString());
+                formatoLinks.Add("nome/" + produto.Nome.Replace(" ", "%20"));
+                formatoLinks.Add(produto.Id.ToString());
+                formatoLinks.Add(produto.Id.ToString());
+
+                ProdutoContainer produtoHATEOAS = new ProdutoContainer();
+                produtoHATEOAS.produto = produto;
+                produtoHATEOAS.links = HATEOAS.GetActions(formatoLinks);
+                produtosHATEOAS.Add(produtoHATEOAS);
+            }
+
+            return Ok(produtosHATEOAS);
         }
 
         [HttpGet("{id}")]
@@ -43,7 +62,18 @@ namespace projeto.Controllers
                                                .Include(p => p.VendasProdutos)
                                                .First(p => p.Id == id);
                 
-                return Ok(produto);
+                
+                List<string> formatoLinks = new List<string>();
+                formatoLinks.Add(produto.Id.ToString());
+                formatoLinks.Add("nome/" + produto.Nome.Replace(" ", "%20"));
+                formatoLinks.Add(produto.Id.ToString());
+                formatoLinks.Add(produto.Id.ToString());
+
+                ProdutoContainer produtoHATEOAS = new ProdutoContainer();
+                produtoHATEOAS.produto = produto;
+                produtoHATEOAS.links = HATEOAS.GetActions(formatoLinks);
+
+                return Ok(produtoHATEOAS);
             }
             catch(Exception)
             {
@@ -60,7 +90,23 @@ namespace projeto.Controllers
                                             .Include(p => p.VendasProdutos)
                                             .OrderBy(p => p.Nome)
                                             .ToList();
-            return Ok(produtos);
+            
+            List<ProdutoContainer> produtosHATEOAS = new List<ProdutoContainer>();
+            foreach(var produto in produtos)
+            {
+                List<string> formatoLinks = new List<string>();
+                formatoLinks.Add(produto.Id.ToString());
+                formatoLinks.Add("nome/" + produto.Nome.Replace(" ", "%20"));
+                formatoLinks.Add(produto.Id.ToString());
+                formatoLinks.Add(produto.Id.ToString());
+
+                ProdutoContainer produtoHATEOAS = new ProdutoContainer();
+                produtoHATEOAS.produto = produto;
+                produtoHATEOAS.links = HATEOAS.GetActions(formatoLinks);
+                produtosHATEOAS.Add(produtoHATEOAS);
+            }
+
+            return Ok(produtosHATEOAS);
         }
 
         [HttpGet("desc")]
@@ -71,7 +117,23 @@ namespace projeto.Controllers
                                             .Include(p => p.VendasProdutos)
                                             .OrderByDescending(p => p.Nome)
                                             .ToList();
-            return Ok(produtos);
+            
+            List<ProdutoContainer> produtosHATEOAS = new List<ProdutoContainer>();
+            foreach(var produto in produtos)
+            {
+                List<string> formatoLinks = new List<string>();
+                formatoLinks.Add(produto.Id.ToString());
+                formatoLinks.Add("nome/" + produto.Nome.Replace(" ", "%20"));
+                formatoLinks.Add(produto.Id.ToString());
+                formatoLinks.Add(produto.Id.ToString());
+
+                ProdutoContainer produtoHATEOAS = new ProdutoContainer();
+                produtoHATEOAS.produto = produto;
+                produtoHATEOAS.links = HATEOAS.GetActions(formatoLinks);
+                produtosHATEOAS.Add(produtoHATEOAS);
+            }
+
+            return Ok(produtosHATEOAS);
         }
 
         [HttpGet("nome/{nome}")]
@@ -84,7 +146,17 @@ namespace projeto.Controllers
                                                .Include(p => p.VendasProdutos)
                                                .First(p => p.Nome.ToUpper() == nome.ToUpper());
 
-                return Ok(produto);
+                List<string> formatoLinks = new List<string>();
+                formatoLinks.Add(produto.Id.ToString());
+                formatoLinks.Add("nome/" + produto.Nome.Replace(" ", "%20"));
+                formatoLinks.Add(produto.Id.ToString());
+                formatoLinks.Add(produto.Id.ToString());
+
+                ProdutoContainer produtoHATEOAS = new ProdutoContainer();
+                produtoHATEOAS.produto = produto;
+                produtoHATEOAS.links = HATEOAS.GetActions(formatoLinks);
+
+                return Ok(produtoHATEOAS);
             }
             catch(Exception)
             {
