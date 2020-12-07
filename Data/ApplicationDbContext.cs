@@ -19,11 +19,11 @@ namespace projeto.Data
 
             modelBuilder.Entity<Cliente>()
                 .HasData(new List<Cliente>(){
-                    new Cliente(1, "Fabiano Preto", "fabiano@gft.com", "123456", "12345678956", DateTime.Now, true),
-                    new Cliente(2, "Karine Martins", "karine@gft.com", "123456", "96531264962", DateTime.Now, true),
-                    new Cliente(3, "Felipe Pina", "felipe@gft.com", "123456", "84216596542", DateTime.Now, true),
-                    new Cliente(4, "Ingrid Serello", "ingrid@gft.com", "123456", "36492516953", DateTime.Now, true),
-                    new Cliente(5, "Jeziel Santos", "jeziel@gft.com", "123456", "96385274145", DateTime.Now, true)
+                    new Cliente(1, "Fabiano Preto", "fabiano@gft.com", "e10adc3949ba59abbe56e057f20f883e", "12345678956", DateTime.Now, true), // senha 123456 para todos
+                    new Cliente(2, "Karine Martins", "karine@gft.com", "e10adc3949ba59abbe56e057f20f883e", "96531264962", DateTime.Now, true),
+                    new Cliente(3, "Felipe Pina", "felipe@gft.com", "e10adc3949ba59abbe56e057f20f883e", "84216596542", DateTime.Now, true),
+                    new Cliente(4, "Ingrid Serello", "ingrid@gft.com", "e10adc3949ba59abbe56e057f20f883e", "36492516953", DateTime.Now, true),
+                    new Cliente(5, "Jeziel Santos", "jeziel@gft.com", "e10adc3949ba59abbe56e057f20f883e", "96385274145", DateTime.Now, true)
                 });
 
             modelBuilder.Entity<Fornecedor>()

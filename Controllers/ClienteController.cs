@@ -193,7 +193,7 @@ namespace projeto.Controllers
 
                 cliente.Nome = clienteTemp.Nome;
                 cliente.Email = clienteTemp.Email;
-                cliente.Senha = clienteTemp.Senha; // Fazer HASH da senha
+                cliente.Senha = Criptografia.Criptografia.getMdIHash(clienteTemp.Senha);
                 cliente.Documento = clienteTemp.Documento;
                 cliente.DataCadastro = DateTime.Now;
                 cliente.Status = true;
@@ -282,7 +282,7 @@ namespace projeto.Controllers
 
                 if(cliente != null)
                 {
-                    if(cliente.Senha.Equals(credenciais.Senha))
+                    if(cliente.Senha.Equals(Criptografia.Criptografia.getMdIHash(credenciais.Senha)))
                     {
                         string chaveDeSeguranca = "hdjflj5fv5v45fv54v65v";
 
@@ -292,6 +292,8 @@ namespace projeto.Controllers
                         var claims = new List<Claim>();
                         claims.Add(new Claim("id", cliente.Id.ToString()));
                         claims.Add(new Claim("email", cliente.Email));
+                        claims.Add(new Claim("nome", cliente.Nome));
+                        claims.Add(new Claim("documento", cliente.Documento));
                         claims.Add(new Claim(ClaimTypes.Role, "Admin"));
 
                         var JWT = new JwtSecurityToken(

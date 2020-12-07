@@ -127,11 +127,11 @@ namespace projeto.Migrations
                 columns: new[] { "Id", "DataCadastro", "Documento", "Email", "Nome", "Senha", "Status" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2020, 12, 3, 13, 48, 10, 151, DateTimeKind.Local).AddTicks(6379), "12345678956", "fabiano@gft.com", "Fabiano Preto", "123456", true },
-                    { 2, new DateTime(2020, 12, 3, 13, 48, 10, 154, DateTimeKind.Local).AddTicks(109), "96531264962", "karine@gft.com", "Karine Martins", "123456", true },
-                    { 3, new DateTime(2020, 12, 3, 13, 48, 10, 154, DateTimeKind.Local).AddTicks(266), "84216596542", "felipe@gft.com", "Felipe Pina", "123456", true },
-                    { 4, new DateTime(2020, 12, 3, 13, 48, 10, 154, DateTimeKind.Local).AddTicks(270), "36492516953", "ingrid@gft.com", "Ingrid Serello", "123456", true },
-                    { 5, new DateTime(2020, 12, 3, 13, 48, 10, 154, DateTimeKind.Local).AddTicks(272), "96385274145", "jeziel@gft.com", "Jeziel Santos", "123456", true }
+                    { 1, new DateTime(2020, 12, 7, 15, 35, 19, 426, DateTimeKind.Local).AddTicks(465), "12345678956", "fabiano@gft.com", "Fabiano Preto", "e10adc3949ba59abbe56e057f20f883e", true },
+                    { 2, new DateTime(2020, 12, 7, 15, 35, 19, 427, DateTimeKind.Local).AddTicks(8171), "96531264962", "karine@gft.com", "Karine Martins", "e10adc3949ba59abbe56e057f20f883e", true },
+                    { 3, new DateTime(2020, 12, 7, 15, 35, 19, 427, DateTimeKind.Local).AddTicks(8306), "84216596542", "felipe@gft.com", "Felipe Pina", "e10adc3949ba59abbe56e057f20f883e", true },
+                    { 4, new DateTime(2020, 12, 7, 15, 35, 19, 427, DateTimeKind.Local).AddTicks(8312), "36492516953", "ingrid@gft.com", "Ingrid Serello", "e10adc3949ba59abbe56e057f20f883e", true },
+                    { 5, new DateTime(2020, 12, 7, 15, 35, 19, 427, DateTimeKind.Local).AddTicks(8315), "96385274145", "jeziel@gft.com", "Jeziel Santos", "e10adc3949ba59abbe56e057f20f883e", true }
                 });
 
             migrationBuilder.InsertData(

@@ -49,51 +49,51 @@ namespace projeto.Migrations
                         new
                         {
                             Id = 1,
-                            DataCadastro = new DateTime(2020, 12, 3, 13, 48, 10, 151, DateTimeKind.Local).AddTicks(6379),
+                            DataCadastro = new DateTime(2020, 12, 7, 15, 35, 19, 426, DateTimeKind.Local).AddTicks(465),
                             Documento = "12345678956",
                             Email = "fabiano@gft.com",
                             Nome = "Fabiano Preto",
-                            Senha = "123456",
+                            Senha = "e10adc3949ba59abbe56e057f20f883e",
                             Status = true
                         },
                         new
                         {
                             Id = 2,
-                            DataCadastro = new DateTime(2020, 12, 3, 13, 48, 10, 154, DateTimeKind.Local).AddTicks(109),
+                            DataCadastro = new DateTime(2020, 12, 7, 15, 35, 19, 427, DateTimeKind.Local).AddTicks(8171),
                             Documento = "96531264962",
                             Email = "karine@gft.com",
                             Nome = "Karine Martins",
-                            Senha = "123456",
+                            Senha = "e10adc3949ba59abbe56e057f20f883e",
                             Status = true
                         },
                         new
                         {
                             Id = 3,
-                            DataCadastro = new DateTime(2020, 12, 3, 13, 48, 10, 154, DateTimeKind.Local).AddTicks(266),
+                            DataCadastro = new DateTime(2020, 12, 7, 15, 35, 19, 427, DateTimeKind.Local).AddTicks(8306),
                             Documento = "84216596542",
                             Email = "felipe@gft.com",
                             Nome = "Felipe Pina",
-                            Senha = "123456",
+                            Senha = "e10adc3949ba59abbe56e057f20f883e",
                             Status = true
                         },
                         new
                         {
                             Id = 4,
-                            DataCadastro = new DateTime(2020, 12, 3, 13, 48, 10, 154, DateTimeKind.Local).AddTicks(270),
+                            DataCadastro = new DateTime(2020, 12, 7, 15, 35, 19, 427, DateTimeKind.Local).AddTicks(8312),
                             Documento = "36492516953",
                             Email = "ingrid@gft.com",
                             Nome = "Ingrid Serello",
-                            Senha = "123456",
+                            Senha = "e10adc3949ba59abbe56e057f20f883e",
                             Status = true
                         },
                         new
                         {
                             Id = 5,
-                            DataCadastro = new DateTime(2020, 12, 3, 13, 48, 10, 154, DateTimeKind.Local).AddTicks(272),
+                            DataCadastro = new DateTime(2020, 12, 7, 15, 35, 19, 427, DateTimeKind.Local).AddTicks(8315),
                             Documento = "96385274145",
                             Email = "jeziel@gft.com",
                             Nome = "Jeziel Santos",
-                            Senha = "123456",
+                            Senha = "e10adc3949ba59abbe56e057f20f883e",
                             Status = true
                         });
                 });
