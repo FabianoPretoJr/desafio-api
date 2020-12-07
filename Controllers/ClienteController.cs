@@ -6,6 +6,11 @@ using System.Linq;
 using System;
 using projeto.Container;
 using System.Collections.Generic;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace projeto.Controllers
 {
@@ -26,6 +31,7 @@ namespace projeto.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Get()
         {
             var clientes = database.clientes.Where(c => c.Status == true).ToList();
@@ -49,6 +55,7 @@ namespace projeto.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Get(int id)
         {
             try
@@ -75,6 +82,7 @@ namespace projeto.Controllers
         }
 
         [HttpGet("asc")]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetByAsc()
         {
             var clientes = database.clientes.Where(c => c.Status == true).OrderBy(c => c.Nome).ToList();
@@ -98,6 +106,7 @@ namespace projeto.Controllers
         }
 
         [HttpGet("desc")]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetByDesc()
         {
             var clientes = database.clientes.Where(c => c.Status == true).OrderByDescending(c => c.Nome).ToList();
@@ -121,6 +130,7 @@ namespace projeto.Controllers
         }
 
         [HttpGet("nome/{nome}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetByNome(string nome)
         {
             try
@@ -183,7 +193,7 @@ namespace projeto.Controllers
 
                 cliente.Nome = clienteTemp.Nome;
                 cliente.Email = clienteTemp.Email;
-                cliente.Senha = clienteTemp.Senha;
+                cliente.Senha = clienteTemp.Senha; // Fazer HASH da senha
                 cliente.Documento = clienteTemp.Documento;
                 cliente.DataCadastro = DateTime.Now;
                 cliente.Status = true;
@@ -202,6 +212,7 @@ namespace projeto.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Put(int id, [FromBody]ClienteDTO clienteTemp)
         {
             if(id > 0)
@@ -240,6 +251,7 @@ namespace projeto.Controllers
         } 
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             try
@@ -254,6 +266,60 @@ namespace projeto.Controllers
             {  
                 Response.StatusCode = 404;
                 return new ObjectResult(new {msg = "Id de cliente está inválido"});
+            }
+        }
+
+        [HttpPost("login")]
+        public IActionResult Login([FromBody] CredenciaisDTO credenciais)
+        {
+            // Buscar um usuário por E-mail
+            // Verificar se a senha está correta
+            // Gerar um token JWT e retornar esse token para o usuário
+
+            try
+            {
+                Cliente cliente = database.clientes.First(u => u.Email.Equals(credenciais.Email));
+
+                if(cliente != null)
+                {
+                    if(cliente.Senha.Equals(credenciais.Senha))
+                    {
+                        string chaveDeSeguranca = "hdjflj5fv5v45fv54v65v";
+
+                        var chaveSimetrica = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(chaveDeSeguranca));
+                        var credenciaisDeAcesso = new SigningCredentials(chaveSimetrica, SecurityAlgorithms.HmacSha256Signature);
+
+                        var claims = new List<Claim>();
+                        claims.Add(new Claim("id", cliente.Id.ToString()));
+                        claims.Add(new Claim("email", cliente.Email));
+                        claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+
+                        var JWT = new JwtSecurityToken(
+                            issuer: "Fabiano Preto",
+                            expires: DateTime.Now.AddHours(1),
+                            audience: "usuario_comum",
+                            signingCredentials: credenciaisDeAcesso,
+                            claims: claims
+                        );
+
+                        return Ok(new JwtSecurityTokenHandler().WriteToken(JWT));
+                    }
+                    else
+                    {
+                        Response.StatusCode = 401;
+                        return new ObjectResult("");
+                    }
+                }
+                else
+                {
+                    Response.StatusCode = 401;
+                    return new ObjectResult("");
+                }
+            }
+            catch (Exception)
+            {
+                Response.StatusCode = 401;
+                return new ObjectResult("");
             }
         }
     }

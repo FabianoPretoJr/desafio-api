@@ -12,6 +12,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using projeto.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.OpenApi.Models;
 
 namespace projeto
 {
@@ -32,7 +36,45 @@ namespace projeto
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddSwaggerGen(config => {
-               config.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo {Title = "API de vendas de produtos", Version = "v1"}); 
+               config.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo {Title = "API de vendas de produtos", Version = "v1"});
+               
+               OpenApiSecurityScheme securityDefinition = new OpenApiSecurityScheme()
+                {
+                    Name = "Bearer",
+                    BearerFormat = "JWT",
+                    Scheme = "bearer",
+                    Description = "Inserir token JWT",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                };
+                config.AddSecurityDefinition("jwt_auth", securityDefinition);
+                OpenApiSecurityScheme securityScheme = new OpenApiSecurityScheme()
+                {
+                    Reference = new OpenApiReference()
+                    {
+                        Id = "jwt_auth",
+                        Type = ReferenceType.SecurityScheme
+                    }
+                };
+                OpenApiSecurityRequirement securityRequirements = new OpenApiSecurityRequirement()
+                {
+                    {securityScheme, new string[] { }},
+                };
+                config.AddSecurityRequirement(securityRequirements);
+            });
+
+            string chaveDeSeguranca = "hdjflj5fv5v45fv54v65v";
+            var chaveSimetrica = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(chaveDeSeguranca));
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {
+                options.TokenValidationParameters = new TokenValidationParameters{
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = "Fabiano Preto",
+                    ValidAudience = "usuario_comum",
+                    IssuerSigningKey = chaveSimetrica
+                };
             });
         }
 
@@ -45,6 +87,8 @@ namespace projeto
             }
 
             app.UseHttpsRedirection();
+
+            app.UseAuthentication();
 
             app.UseRouting();
 

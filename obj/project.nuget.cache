@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "94f6N6l+jX2c0VLrWZi7Dr42WwR6VKIHVqhx55sDR7GtMq4JKsiTCW9GL+Q93E0sOPQ5WcyY6QzpmrQSGJq14A==",
+  "dgSpecHash": "I4drK+wmY7kmB6YqpcNWeHXjf2nCvsktVxAnHUNHtOj0aY3G5LMgdjOYgK0Si2pvraF8z/aOY6bbAIONZJeacw==",
   "success": true,
   "projectFilePath": "C:\\Users\\FOEU\\My Private Documents\\Projetos\\desafio-api\\projeto\\projeto.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\FOEU\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\3.0.0\\microsoft.aspnetcore.authentication.jwtbearer.3.0.0.nupkg.sha512",
     "C:\\Users\\FOEU\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\3.1.2\\microsoft.aspnetcore.jsonpatch.3.1.2.nupkg.sha512",
     "C:\\Users\\FOEU\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\3.1.2\\microsoft.aspnetcore.mvc.newtonsoftjson.3.1.2.nupkg.sha512",
     "C:\\Users\\FOEU\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
@@ -26,6 +27,11 @@
     "C:\\Users\\FOEU\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\3.1.9\\microsoft.extensions.logging.abstractions.3.1.9.nupkg.sha512",
     "C:\\Users\\FOEU\\.nuget\\packages\\microsoft.extensions.options\\3.1.9\\microsoft.extensions.options.3.1.9.nupkg.sha512",
     "C:\\Users\\FOEU\\.nuget\\packages\\microsoft.extensions.primitives\\3.1.9\\microsoft.extensions.primitives.3.1.9.nupkg.sha512",
+    "C:\\Users\\FOEU\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\5.5.0\\microsoft.identitymodel.jsonwebtokens.5.5.0.nupkg.sha512",
+    "C:\\Users\\FOEU\\.nuget\\packages\\microsoft.identitymodel.logging\\5.5.0\\microsoft.identitymodel.logging.5.5.0.nupkg.sha512",
+    "C:\\Users\\FOEU\\.nuget\\packages\\microsoft.identitymodel.protocols\\5.5.0\\microsoft.identitymodel.protocols.5.5.0.nupkg.sha512",
+    "C:\\Users\\FOEU\\.nuget\\packages\\microsoft.identitymodel.protocols.openidconnect\\5.5.0\\microsoft.identitymodel.protocols.openidconnect.5.5.0.nupkg.sha512",
+    "C:\\Users\\FOEU\\.nuget\\packages\\microsoft.identitymodel.tokens\\5.5.0\\microsoft.identitymodel.tokens.5.5.0.nupkg.sha512",
     "C:\\Users\\FOEU\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
     "C:\\Users\\FOEU\\.nuget\\packages\\mysqlconnector\\0.69.9\\mysqlconnector.0.69.9.nupkg.sha512",
     "C:\\Users\\FOEU\\.nuget\\packages\\newtonsoft.json\\12.0.2\\newtonsoft.json.12.0.2.nupkg.sha512",
@@ -38,7 +44,9 @@
     "C:\\Users\\FOEU\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\5.6.3\\swashbuckle.aspnetcore.swaggerui.5.6.3.nupkg.sha512",
     "C:\\Users\\FOEU\\.nuget\\packages\\system.collections.immutable\\1.7.1\\system.collections.immutable.1.7.1.nupkg.sha512",
     "C:\\Users\\FOEU\\.nuget\\packages\\system.componentmodel.annotations\\4.7.0\\system.componentmodel.annotations.4.7.0.nupkg.sha512",
-    "C:\\Users\\FOEU\\.nuget\\packages\\system.diagnostics.diagnosticsource\\4.7.1\\system.diagnostics.diagnosticsource.4.7.1.nupkg.sha512"
+    "C:\\Users\\FOEU\\.nuget\\packages\\system.diagnostics.diagnosticsource\\4.7.1\\system.diagnostics.diagnosticsource.4.7.1.nupkg.sha512",
+    "C:\\Users\\FOEU\\.nuget\\packages\\system.identitymodel.tokens.jwt\\5.5.0\\system.identitymodel.tokens.jwt.5.5.0.nupkg.sha512",
+    "C:\\Users\\FOEU\\.nuget\\packages\\system.security.cryptography.cng\\4.5.0\\system.security.cryptography.cng.4.5.0.nupkg.sha512"
   ],
   "logs": []
 }

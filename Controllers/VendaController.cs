@@ -7,11 +7,13 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using projeto.Container;
+using Microsoft.AspNetCore.Authorization;
 
 namespace projeto.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class VendaController : ControllerBase
     {
         private readonly ApplicationDbContext database;
