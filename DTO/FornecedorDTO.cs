@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using projeto.Models;
-
 namespace projeto.DTO
 {
     public class FornecedorDTO

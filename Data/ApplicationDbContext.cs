@@ -15,7 +15,7 @@ namespace projeto.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<VendaProduto>().HasKey(sc => new { sc.VendaId, sc.ProdutoId, sc.FornecedorId});
+            modelBuilder.Entity<VendaProduto>().HasKey(sc => new { sc.VendaId, sc.ProdutoId});
 
             modelBuilder.Entity<Cliente>()
                 .HasData(new List<Cliente>(){
@@ -41,22 +41,23 @@ namespace projeto.Data
                     new Produto(2, "Notebook", "5415", 3500, false, 0, "Tecnologia", "notebook.png", 10, 2, true),
                     new Produto(3, "Cadeira Gamer", "2548", 1300, false, 0, "Móveis", "cadeira.png", 30, 4, true),
                     new Produto(4, "Teclado", "9514", 450, false, 0, "Tecnologia", "teclado.png", 80, 5, true),
-                    new Produto(5, "Celular", "9647", 1500, false, 0, "Telecomunicação", "celular.png", 500, 1, true)
+                    new Produto(5, "Celular", "9647", 1500, false, 0, "Telecomunicação", "celular.png", 500, 3, true),
+                    new Produto(6, "Kindle", "4512", 400, false, 0, "Tecnologia", "kindle.png", 100, 1, true)
                 });
 
             modelBuilder.Entity<Venda>()
                 .HasData(new List<Venda>(){
-                    new Venda(1, 1, 1750, DateTime.ParseExact("20/11/2020", "dd/MM/yyyy", null), true),
-                    new Venda(2, 2, 3500, DateTime.ParseExact("03/12/2020", "dd/MM/yyyy", null), true),
-                    new Venda(3, 4, 1500, DateTime.ParseExact("04/12/2020", "dd/MM/yyyy", null), true)
+                    new Venda(1, 1, 1, 1750, DateTime.ParseExact("20/11/2020", "dd/MM/yyyy", null), true),
+                    new Venda(2, 2, 2,3500, DateTime.ParseExact("03/12/2020", "dd/MM/yyyy", null), true),
+                    new Venda(3, 4, 4,1500, DateTime.ParseExact("04/12/2020", "dd/MM/yyyy", null), true)
                 });
 
             modelBuilder.Entity<VendaProduto>()
                 .HasData(new List<VendaProduto>(){
-                    new VendaProduto(1, 3, 4),
-                    new VendaProduto(1, 4, 5),
-                    new VendaProduto(2, 2, 2),
-                    new VendaProduto(3, 5, 3)
+                    new VendaProduto(1, 6),
+                    new VendaProduto(1, 1),
+                    new VendaProduto(2, 2),
+                    new VendaProduto(3, 3)
                 });
 
             base.OnModelCreating(modelBuilder);

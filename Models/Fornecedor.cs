@@ -18,6 +18,5 @@ namespace projeto.Models
         public string Nome { get; set; }
         public string CNPJ { get; set; }
         public bool Status { get; set; }
-        public ICollection<VendaProduto> VendasProdutos { get; set; }
     }
 }

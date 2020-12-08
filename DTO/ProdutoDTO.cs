@@ -1,5 +1,3 @@
-using projeto.Models;
-
 namespace projeto.DTO
 {
     public class ProdutoDTO

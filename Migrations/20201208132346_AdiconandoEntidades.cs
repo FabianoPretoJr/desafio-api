@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace projeto.Migrations
 {
-    public partial class AdicionandoEntidades : Migration
+    public partial class AdiconandoEntidades : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -42,28 +42,6 @@ namespace projeto.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "venda",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    ClienteId = table.Column<int>(nullable: false),
-                    TotalCompra = table.Column<decimal>(nullable: false),
-                    DataCompra = table.Column<DateTime>(nullable: false),
-                    Status = table.Column<bool>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_venda", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_venda_clientes_ClienteId",
-                        column: x => x.ClienteId,
-                        principalTable: "clientes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "produtos",
                 columns: table => new
                 {
@@ -92,22 +70,44 @@ namespace projeto.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "vendasProdutos",
+                name: "venda",
                 columns: table => new
                 {
-                    VendaId = table.Column<int>(nullable: false),
-                    ProdutoId = table.Column<int>(nullable: false),
-                    FornecedorId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ClienteId = table.Column<int>(nullable: false),
+                    FornecedorId = table.Column<int>(nullable: false),
+                    TotalCompra = table.Column<decimal>(nullable: false),
+                    DataCompra = table.Column<DateTime>(nullable: false),
+                    Status = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_vendasProdutos", x => new { x.VendaId, x.ProdutoId, x.FornecedorId });
+                    table.PrimaryKey("PK_venda", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_vendasProdutos_fornecedores_FornecedorId",
+                        name: "FK_venda_clientes_ClienteId",
+                        column: x => x.ClienteId,
+                        principalTable: "clientes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_venda_fornecedores_FornecedorId",
                         column: x => x.FornecedorId,
                         principalTable: "fornecedores",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "vendasProdutos",
+                columns: table => new
+                {
+                    VendaId = table.Column<int>(nullable: false),
+                    ProdutoId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_vendasProdutos", x => new { x.VendaId, x.ProdutoId });
                     table.ForeignKey(
                         name: "FK_vendasProdutos_produtos_ProdutoId",
                         column: x => x.ProdutoId,
@@ -127,11 +127,11 @@ namespace projeto.Migrations
                 columns: new[] { "Id", "DataCadastro", "Documento", "Email", "Nome", "Senha", "Status" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2020, 12, 7, 15, 35, 19, 426, DateTimeKind.Local).AddTicks(465), "12345678956", "fabiano@gft.com", "Fabiano Preto", "e10adc3949ba59abbe56e057f20f883e", true },
-                    { 2, new DateTime(2020, 12, 7, 15, 35, 19, 427, DateTimeKind.Local).AddTicks(8171), "96531264962", "karine@gft.com", "Karine Martins", "e10adc3949ba59abbe56e057f20f883e", true },
-                    { 3, new DateTime(2020, 12, 7, 15, 35, 19, 427, DateTimeKind.Local).AddTicks(8306), "84216596542", "felipe@gft.com", "Felipe Pina", "e10adc3949ba59abbe56e057f20f883e", true },
-                    { 4, new DateTime(2020, 12, 7, 15, 35, 19, 427, DateTimeKind.Local).AddTicks(8312), "36492516953", "ingrid@gft.com", "Ingrid Serello", "e10adc3949ba59abbe56e057f20f883e", true },
-                    { 5, new DateTime(2020, 12, 7, 15, 35, 19, 427, DateTimeKind.Local).AddTicks(8315), "96385274145", "jeziel@gft.com", "Jeziel Santos", "e10adc3949ba59abbe56e057f20f883e", true }
+                    { 1, new DateTime(2020, 12, 8, 10, 23, 46, 399, DateTimeKind.Local).AddTicks(2715), "12345678956", "fabiano@gft.com", "Fabiano Preto", "e10adc3949ba59abbe56e057f20f883e", true },
+                    { 2, new DateTime(2020, 12, 8, 10, 23, 46, 401, DateTimeKind.Local).AddTicks(1874), "96531264962", "karine@gft.com", "Karine Martins", "e10adc3949ba59abbe56e057f20f883e", true },
+                    { 3, new DateTime(2020, 12, 8, 10, 23, 46, 401, DateTimeKind.Local).AddTicks(2004), "84216596542", "felipe@gft.com", "Felipe Pina", "e10adc3949ba59abbe56e057f20f883e", true },
+                    { 4, new DateTime(2020, 12, 8, 10, 23, 46, 401, DateTimeKind.Local).AddTicks(2009), "36492516953", "ingrid@gft.com", "Ingrid Serello", "e10adc3949ba59abbe56e057f20f883e", true },
+                    { 5, new DateTime(2020, 12, 8, 10, 23, 46, 401, DateTimeKind.Local).AddTicks(2011), "96385274145", "jeziel@gft.com", "Jeziel Santos", "e10adc3949ba59abbe56e057f20f883e", true }
                 });
 
             migrationBuilder.InsertData(
@@ -152,31 +152,32 @@ namespace projeto.Migrations
                 values: new object[,]
                 {
                     { 1, "Tecnologia", "1454", 1, "echodot.png", "Echo Dot", false, 200, true, 330m, 0m },
-                    { 5, "Telecomunicação", "9647", 1, "celular.png", "Celular", false, 500, true, 1500m, 0m },
+                    { 6, "Tecnologia", "4512", 1, "kindle.png", "Kindle", false, 100, true, 400m, 0m },
                     { 2, "Tecnologia", "5415", 2, "notebook.png", "Notebook", false, 10, true, 3500m, 0m },
+                    { 5, "Telecomunicação", "9647", 3, "celular.png", "Celular", false, 500, true, 1500m, 0m },
                     { 3, "Móveis", "2548", 4, "cadeira.png", "Cadeira Gamer", false, 30, true, 1300m, 0m },
                     { 4, "Tecnologia", "9514", 5, "teclado.png", "Teclado", false, 80, true, 450m, 0m }
                 });
 
             migrationBuilder.InsertData(
                 table: "venda",
-                columns: new[] { "Id", "ClienteId", "DataCompra", "Status", "TotalCompra" },
+                columns: new[] { "Id", "ClienteId", "DataCompra", "FornecedorId", "Status", "TotalCompra" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2020, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1750m },
-                    { 2, 2, new DateTime(2020, 12, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 3500m },
-                    { 3, 4, new DateTime(2020, 12, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1500m }
+                    { 1, 1, new DateTime(2020, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, true, 1750m },
+                    { 2, 2, new DateTime(2020, 12, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, true, 3500m },
+                    { 3, 4, new DateTime(2020, 12, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, true, 1500m }
                 });
 
             migrationBuilder.InsertData(
                 table: "vendasProdutos",
-                columns: new[] { "VendaId", "ProdutoId", "FornecedorId" },
+                columns: new[] { "VendaId", "ProdutoId" },
                 values: new object[,]
                 {
-                    { 3, 5, 3 },
-                    { 2, 2, 2 },
-                    { 1, 3, 4 },
-                    { 1, 4, 5 }
+                    { 1, 6 },
+                    { 1, 1 },
+                    { 2, 2 },
+                    { 3, 3 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -190,8 +191,8 @@ namespace projeto.Migrations
                 column: "ClienteId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_vendasProdutos_FornecedorId",
-                table: "vendasProdutos",
+                name: "IX_venda_FornecedorId",
+                table: "venda",
                 column: "FornecedorId");
 
             migrationBuilder.CreateIndex(
@@ -212,10 +213,10 @@ namespace projeto.Migrations
                 name: "venda");
 
             migrationBuilder.DropTable(
-                name: "fornecedores");
+                name: "clientes");
 
             migrationBuilder.DropTable(
-                name: "clientes");
+                name: "fornecedores");
         }
     }
 }

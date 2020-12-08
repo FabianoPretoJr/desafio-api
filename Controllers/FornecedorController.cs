@@ -4,7 +4,6 @@ using projeto.Models;
 using projeto.DTO;
 using System.Linq;
 using System;
-using Microsoft.EntityFrameworkCore;
 using projeto.Container;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
@@ -31,7 +30,7 @@ namespace projeto.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var fornecedores = database.fornecedores.Where(f => f.Status == true).Include(f => f.VendasProdutos).ToList();
+            var fornecedores = database.fornecedores.Where(f => f.Status == true).ToList();
 
             List<FornecedorContainer> fornecedoresHATEOAS = new List<FornecedorContainer>();
             foreach(var fornecedor in fornecedores)
@@ -56,7 +55,7 @@ namespace projeto.Controllers
         {
             try
             {
-                var fornecedor = database.fornecedores.Where(f => f.Status == true).Include(f => f.VendasProdutos).First(f => f.Id == id);
+                var fornecedor = database.fornecedores.Where(f => f.Status == true).First(f => f.Id == id);
 
                 List<string> formatoLinks = new List<string>();
                 formatoLinks.Add(fornecedor.Id.ToString());
@@ -80,7 +79,7 @@ namespace projeto.Controllers
         [HttpGet("asc")]
         public IActionResult GetByAsc()
         {
-            var fornecedores = database.fornecedores.Where(f => f.Status == true).Include(f => f.VendasProdutos).OrderBy(f => f.Nome).ToList();
+            var fornecedores = database.fornecedores.Where(f => f.Status == true).OrderBy(f => f.Nome).ToList();
             
             List<FornecedorContainer> fornecedoresHATEOAS = new List<FornecedorContainer>();
             foreach(var fornecedor in fornecedores)
@@ -103,7 +102,7 @@ namespace projeto.Controllers
         [HttpGet("desc")]
         public IActionResult GetByDesc()
         {
-            var fornecedores = database.fornecedores.Where(f => f.Status == true).Include(f => f.VendasProdutos).OrderByDescending(f => f.Nome).ToList();
+            var fornecedores = database.fornecedores.Where(f => f.Status == true).OrderByDescending(f => f.Nome).ToList();
             
             List<FornecedorContainer> fornecedoresHATEOAS = new List<FornecedorContainer>();
             foreach(var fornecedor in fornecedores)
@@ -128,7 +127,7 @@ namespace projeto.Controllers
         {
             try
             {
-                var fornecedor = database.fornecedores.Where(f => f.Status == true).Include(f => f.VendasProdutos).First(f => f.Nome.ToUpper() == nome.ToUpper());
+                var fornecedor = database.fornecedores.Where(f => f.Status == true).First(f => f.Nome.ToUpper() == nome.ToUpper());
                 
                 List<string> formatoLinks = new List<string>();
                 formatoLinks.Add(fornecedor.Id.ToString());

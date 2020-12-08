@@ -33,9 +33,9 @@ namespace projeto.Controllers
         {
             var vendas = database.venda.Where(v => v.Status == true)
                                        .Include(v => v.Cliente)
+                                       .Include(v => v.Fornecedor)
                                        .Include(v => v.VendasProdutos)
                                        .ThenInclude(v => v.Produto)
-                                       .ThenInclude(v => v.Fornecedor)
                                        .ToList();
             
             List<VendaContainer> vendasHATEOAS = new List<VendaContainer>();
@@ -63,9 +63,9 @@ namespace projeto.Controllers
             {
                 var venda = database.venda.Where(v => v.Status == true)
                                           .Include(v => v.Cliente)
+                                          .Include(v => v.Fornecedor)
                                           .Include(v => v.VendasProdutos)
                                           .ThenInclude(v => v.Produto)
-                                          .ThenInclude(v => v.Fornecedor)
                                           .First(v => v.Id == id);
 
                 List<string> formatoLinks = new List<string>();
@@ -92,9 +92,9 @@ namespace projeto.Controllers
         {
             var vendas = database.venda.Where(v => v.Status == true)
                                        .Include(v => v.Cliente)
+                                       .Include(v => v.Fornecedor)
                                        .Include(v => v.VendasProdutos)
                                        .ThenInclude(v => v.Produto)
-                                       .ThenInclude(v => v.Fornecedor)
                                        .OrderBy(v => v.DataCompra)
                                        .ToList();
             
@@ -121,9 +121,9 @@ namespace projeto.Controllers
         {
             var vendas = database.venda.Where(v => v.Status == true)
                                       .Include(v => v.Cliente)
+                                      .Include(v => v.Fornecedor)
                                       .Include(v => v.VendasProdutos)
                                       .ThenInclude(v => v.Produto)
-                                      .ThenInclude(v => v.Fornecedor)
                                       .OrderByDescending(v => v.DataCompra)
                                       .ToList();
             
@@ -153,9 +153,9 @@ namespace projeto.Controllers
             {
                 var venda = database.venda.Where(v => v.Status == true)
                                           .Include(v => v.Cliente)
+                                          .Include(v => v.Fornecedor)
                                           .Include(v => v.VendasProdutos)
                                           .ThenInclude(v => v.Produto)
-                                          .ThenInclude(v => v.Fornecedor)
                                           .First(v => v.DataCompra == DateTime.ParseExact(data, "dd/MM/yyyy", null));
                 
                 List<string> formatoLinks = new List<string>();
@@ -226,7 +226,7 @@ namespace projeto.Controllers
                     return new ObjectResult(new {msg = "Id de cliente não encontrado"});
                 }
 
-                foreach (var produto in vendaTemp.Produtos)
+                foreach(var produto in vendaTemp.Produtos)
                 {
                     if(produto <= 0)
                     {
@@ -236,11 +236,24 @@ namespace projeto.Controllers
                     try
                     {
                         var idProduto = database.produtos.First(p => p.Id == produto);
+                        var idFornecedor = database.fornecedores.First(f => f.Id == vendaTemp.Fornecedor);
 
                         if(idProduto == null)
                         {
                             Response.StatusCode = 400;
                             return new ObjectResult(new {msg = "Id de produto não encontrado"}); // Trabalhar pra informar qual Id está errado
+                        }
+
+                        if(idProduto.Quantidade <= 0)
+                        {
+                            Response.StatusCode = 400;
+                            return new ObjectResult(new {msg = "Quantidade insuficiente desse produto em estoque"}); // falar produto é
+                        }
+
+                        if(idProduto.Fornecedor != idFornecedor)
+                        {
+                            Response.StatusCode = 400;
+                            return new ObjectResult(new {msg = "Produto: nomeDele não pertence ao fornecedor informado"});
                         }
                     }
                     catch(Exception)
@@ -262,6 +275,7 @@ namespace projeto.Controllers
                 Venda venda = new Venda();
 
                 venda.Cliente = database.clientes.First(c => c.Id == vendaTemp.Cliente);
+                venda.Fornecedor = database.fornecedores.First(f => f.Id == vendaTemp.Fornecedor);
                 venda.DataCompra = DateTime.ParseExact(vendaTemp.DataCompra, "dd/MM/yyyy", null);
                 venda.TotalCompra = totalCompra;
                 venda.Status = true;
@@ -274,8 +288,10 @@ namespace projeto.Controllers
                     VendaProduto vp = new VendaProduto();
 
                     vp.Venda = database.venda.First(v => v.Id == venda.Id);
-                    vp.Fornecedor = database.fornecedores.First(f => f.Id == vendaTemp.Fornecedor);
                     vp.Produto = database.produtos.First(p => p.Id == produto);
+
+                    var prod = database.produtos.First(p => p.Id == produto);
+                    prod.Quantidade = prod.Quantidade - 1;
 
                     database.vendasProdutos.Add(vp);
                     database.SaveChanges();
@@ -299,10 +315,13 @@ namespace projeto.Controllers
                 try
                 {
                     decimal totalCompra = 0;
-                    var venda = database.venda.Include(v => v.Cliente).First(v => v.Id == id);
+                    var venda = database.venda.Include(v => v.Cliente).Include(v => v.Fornecedor).First(v => v.Id == id);
 
                     if(venda != null)
                     {
+                        venda.Cliente = vendaTemp.Cliente > 0 ? database.clientes.First(c => c.Id == vendaTemp.Cliente) : venda.Cliente;
+                        venda.DataCompra = vendaTemp.DataCompra != null ? DateTime.ParseExact(vendaTemp.DataCompra, "dd/MM/yyyy", null) : venda.DataCompra;
+
                         if(vendaTemp.Produtos != null)
                         {
                             foreach (var produto in vendaTemp.Produtos)
@@ -314,12 +333,24 @@ namespace projeto.Controllers
                                 }
                                 try
                                 {
-                                    var idProduto = database.produtos.First(p => p.Id == produto);
+                                    var idProduto = database.produtos.Include(p => p.Fornecedor).First(p => p.Id == produto);
 
                                     if(idProduto == null)
                                     {
                                         Response.StatusCode = 400;
                                         return new ObjectResult(new {msg = "Id de produto não encontrado"}); // Trabalhar pra informar qual Id está errado
+                                    }
+
+                                    if(idProduto.Quantidade <= 0)
+                                    {
+                                        Response.StatusCode = 400;
+                                        return new ObjectResult(new {msg = "Quantidade insuficiente desse produto em estoque"}); // falar produto é
+                                    }
+
+                                    if(idProduto.Fornecedor.Id != vendaTemp.Fornecedor)
+                                    {
+                                        Response.StatusCode = 400;
+                                        return new ObjectResult(new {msg = "Produto: nomeDele não pertence ao fornecedor dessa venda"});
                                     }
                                 }
                                 catch(Exception)
@@ -331,10 +362,13 @@ namespace projeto.Controllers
                                 totalCompra = Convert.ToBoolean(pro.Promocao) ? totalCompra + Convert.ToDecimal(pro.ValorPromocao) : totalCompra + pro.Valor;
                             }
                         }
+                        else if(vendaTemp.Fornecedor > 0)
+                        {
+                            Response.StatusCode = 400;
+                            return new ObjectResult(new {msg = "Necessário enviar uma lista de novos produtos que sejam condizentes com este novo fornecedor"});
+                        }
 
-
-                        venda.Cliente = vendaTemp.Cliente > 0 ? database.clientes.First(c => c.Id == vendaTemp.Cliente) : venda.Cliente;
-                        venda.DataCompra = vendaTemp.DataCompra != null ? DateTime.ParseExact(vendaTemp.DataCompra, "dd/MM/yyyy", null) : venda.DataCompra;
+                        venda.Fornecedor = vendaTemp.Fornecedor > 0 ? database.fornecedores.First(f => f.Id == vendaTemp.Fornecedor) : venda.Fornecedor;
                         venda.TotalCompra = vendaTemp.Produtos != null ? totalCompra : venda.TotalCompra;
                         database.SaveChanges();
 
@@ -348,26 +382,10 @@ namespace projeto.Controllers
                             {
                                 VendaProduto vp = new VendaProduto();
 
-                                if(vendaTemp.Fornecedor < 0)
-                                {
-                                    Response.StatusCode = 400;
-                                    return new ObjectResult(new {msg = "Necessário que informe ID de fornecedor, já que deseja atualizar produtos."});
-                                }
                                 vp.Venda = database.venda.First(v => v.Id == id);
-                                vp.Fornecedor = database.fornecedores.First(f => f.Id == vendaTemp.Fornecedor);
                                 vp.Produto = database.produtos.First(p => p.Id == produto);
 
                                 database.vendasProdutos.Add(vp);
-                                database.SaveChanges();
-                            }
-                        }
-                        else if(vendaTemp.Fornecedor > 0)
-                        {
-                            var vendasProdutos = database.vendasProdutos.Where(vp => vp.Venda.Id == id).ToList();
-                            foreach (var vp in vendasProdutos)
-                            {
-                                vp.Fornecedor = database.fornecedores.First(f => f.Id == vendaTemp.Fornecedor);
-                                database.vendasProdutos.Update(vp);
                                 database.SaveChanges();
                             }
                         }

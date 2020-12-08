@@ -49,7 +49,7 @@ namespace projeto.Migrations
                         new
                         {
                             Id = 1,
-                            DataCadastro = new DateTime(2020, 12, 7, 15, 35, 19, 426, DateTimeKind.Local).AddTicks(465),
+                            DataCadastro = new DateTime(2020, 12, 8, 10, 23, 46, 399, DateTimeKind.Local).AddTicks(2715),
                             Documento = "12345678956",
                             Email = "fabiano@gft.com",
                             Nome = "Fabiano Preto",
@@ -59,7 +59,7 @@ namespace projeto.Migrations
                         new
                         {
                             Id = 2,
-                            DataCadastro = new DateTime(2020, 12, 7, 15, 35, 19, 427, DateTimeKind.Local).AddTicks(8171),
+                            DataCadastro = new DateTime(2020, 12, 8, 10, 23, 46, 401, DateTimeKind.Local).AddTicks(1874),
                             Documento = "96531264962",
                             Email = "karine@gft.com",
                             Nome = "Karine Martins",
@@ -69,7 +69,7 @@ namespace projeto.Migrations
                         new
                         {
                             Id = 3,
-                            DataCadastro = new DateTime(2020, 12, 7, 15, 35, 19, 427, DateTimeKind.Local).AddTicks(8306),
+                            DataCadastro = new DateTime(2020, 12, 8, 10, 23, 46, 401, DateTimeKind.Local).AddTicks(2004),
                             Documento = "84216596542",
                             Email = "felipe@gft.com",
                             Nome = "Felipe Pina",
@@ -79,7 +79,7 @@ namespace projeto.Migrations
                         new
                         {
                             Id = 4,
-                            DataCadastro = new DateTime(2020, 12, 7, 15, 35, 19, 427, DateTimeKind.Local).AddTicks(8312),
+                            DataCadastro = new DateTime(2020, 12, 8, 10, 23, 46, 401, DateTimeKind.Local).AddTicks(2009),
                             Documento = "36492516953",
                             Email = "ingrid@gft.com",
                             Nome = "Ingrid Serello",
@@ -89,7 +89,7 @@ namespace projeto.Migrations
                         new
                         {
                             Id = 5,
-                            DataCadastro = new DateTime(2020, 12, 7, 15, 35, 19, 427, DateTimeKind.Local).AddTicks(8315),
+                            DataCadastro = new DateTime(2020, 12, 8, 10, 23, 46, 401, DateTimeKind.Local).AddTicks(2011),
                             Documento = "96385274145",
                             Email = "jeziel@gft.com",
                             Nome = "Jeziel Santos",
@@ -259,13 +259,27 @@ namespace projeto.Migrations
                             Id = 5,
                             Categoria = "Telecomunicação",
                             CodigoProduto = "9647",
-                            FornecedorId = 1,
+                            FornecedorId = 3,
                             Imagem = "celular.png",
                             Nome = "Celular",
                             Promocao = false,
                             Quantidade = 500,
                             Status = true,
                             Valor = 1500m,
+                            ValorPromocao = 0m
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Categoria = "Tecnologia",
+                            CodigoProduto = "4512",
+                            FornecedorId = 1,
+                            Imagem = "kindle.png",
+                            Nome = "Kindle",
+                            Promocao = false,
+                            Quantidade = 100,
+                            Status = true,
+                            Valor = 400m,
                             ValorPromocao = 0m
                         });
                 });
@@ -282,6 +296,9 @@ namespace projeto.Migrations
                     b.Property<DateTime>("DataCompra")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("FornecedorId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Status")
                         .HasColumnType("tinyint(1)");
 
@@ -292,6 +309,8 @@ namespace projeto.Migrations
 
                     b.HasIndex("ClienteId");
 
+                    b.HasIndex("FornecedorId");
+
                     b.ToTable("venda");
 
                     b.HasData(
@@ -300,6 +319,7 @@ namespace projeto.Migrations
                             Id = 1,
                             ClienteId = 1,
                             DataCompra = new DateTime(2020, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FornecedorId = 1,
                             Status = true,
                             TotalCompra = 1750m
                         },
@@ -308,6 +328,7 @@ namespace projeto.Migrations
                             Id = 2,
                             ClienteId = 2,
                             DataCompra = new DateTime(2020, 12, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FornecedorId = 2,
                             Status = true,
                             TotalCompra = 3500m
                         },
@@ -316,6 +337,7 @@ namespace projeto.Migrations
                             Id = 3,
                             ClienteId = 4,
                             DataCompra = new DateTime(2020, 12, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FornecedorId = 4,
                             Status = true,
                             TotalCompra = 1500m
                         });
@@ -329,12 +351,7 @@ namespace projeto.Migrations
                     b.Property<int>("ProdutoId")
                         .HasColumnType("int");
 
-                    b.Property<int>("FornecedorId")
-                        .HasColumnType("int");
-
-                    b.HasKey("VendaId", "ProdutoId", "FornecedorId");
-
-                    b.HasIndex("FornecedorId");
+                    b.HasKey("VendaId", "ProdutoId");
 
                     b.HasIndex("ProdutoId");
 
@@ -344,26 +361,22 @@ namespace projeto.Migrations
                         new
                         {
                             VendaId = 1,
-                            ProdutoId = 3,
-                            FornecedorId = 4
+                            ProdutoId = 6
                         },
                         new
                         {
                             VendaId = 1,
-                            ProdutoId = 4,
-                            FornecedorId = 5
+                            ProdutoId = 1
                         },
                         new
                         {
                             VendaId = 2,
-                            ProdutoId = 2,
-                            FornecedorId = 2
+                            ProdutoId = 2
                         },
                         new
                         {
                             VendaId = 3,
-                            ProdutoId = 5,
-                            FornecedorId = 3
+                            ProdutoId = 3
                         });
                 });
 
@@ -383,16 +396,16 @@ namespace projeto.Migrations
                         .HasForeignKey("ClienteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("projeto.Models.Fornecedor", "Fornecedor")
+                        .WithMany()
+                        .HasForeignKey("FornecedorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("projeto.Models.VendaProduto", b =>
                 {
-                    b.HasOne("projeto.Models.Fornecedor", "Fornecedor")
-                        .WithMany("VendasProdutos")
-                        .HasForeignKey("FornecedorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("projeto.Models.Produto", "Produto")
                         .WithMany("VendasProdutos")
                         .HasForeignKey("ProdutoId")
