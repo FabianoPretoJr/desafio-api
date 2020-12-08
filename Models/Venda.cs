@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace projeto.Models
 {
@@ -17,8 +18,10 @@ namespace projeto.Models
         }
 
         public int Id { get; set; }
+        [JsonIgnore]
         public int ClienteId { get; set; }
         public Cliente Cliente { get; set; }
+        [JsonIgnore]
         public int FornecedorId { get; set; }
         public Fornecedor Fornecedor { get; set; }
         public decimal TotalCompra { get; set; }

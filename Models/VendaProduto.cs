@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace projeto.Models
 {
     public class VendaProduto
@@ -8,9 +10,11 @@ namespace projeto.Models
             this.VendaId = vendaId;
             this.ProdutoId = produtoId;
         }
-
+        [JsonIgnore]
         public int VendaId { get; set; }
+        [JsonIgnore]
         public Venda Venda { get; set; }
+        [JsonIgnore]
         public int ProdutoId { get; set; }
         public Produto Produto { get; set; }
     }

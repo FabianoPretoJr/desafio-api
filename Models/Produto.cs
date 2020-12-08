@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace projeto.Models
 {
@@ -27,9 +28,11 @@ namespace projeto.Models
         public string Categoria { get; set; }
         public string Imagem { get; set; }
         public int Quantidade { get; set; }
+        [JsonIgnore]
         public int FornecedorId { get; set; }
         public Fornecedor Fornecedor { get; set; }
         public bool Status { get; set; }
+        [JsonIgnore]
         public ICollection<VendaProduto> VendasProdutos { get; set; }
     }
 }

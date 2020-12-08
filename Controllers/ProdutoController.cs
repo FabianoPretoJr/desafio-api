@@ -31,10 +31,7 @@ namespace projeto.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var produtos = database.produtos.Where(p => p.Status == true)
-                                            .Include(p => p.Fornecedor)
-                                            .Include(p => p.VendasProdutos)
-                                            .ToList();
+            var produtos = database.produtos.Where(p => p.Status == true).Include(p => p.Fornecedor).ToList();
             
             List<ProdutoContainer> produtosHATEOAS = new List<ProdutoContainer>();
             foreach(var produto in produtos)
@@ -59,11 +56,7 @@ namespace projeto.Controllers
         {
             try
             {
-                var produto = database.produtos.Where(p => p.Status == true)
-                                               .Include(p => p.Fornecedor)
-                                               .Include(p => p.VendasProdutos)
-                                               .First(p => p.Id == id);
-                
+                var produto = database.produtos.Where(p => p.Status == true).Include(p => p.Fornecedor).First(p => p.Id == id);
                 
                 List<string> formatoLinks = new List<string>();
                 formatoLinks.Add(produto.Id.ToString());
@@ -87,11 +80,7 @@ namespace projeto.Controllers
         [HttpGet("asc")]
         public IActionResult GetByAsc()
         {
-            var produtos = database.produtos.Where(p => p.Status == true)
-                                            .Include(p => p.Fornecedor)
-                                            .Include(p => p.VendasProdutos)
-                                            .OrderBy(p => p.Nome)
-                                            .ToList();
+            var produtos = database.produtos.Where(p => p.Status == true).Include(p => p.Fornecedor).OrderBy(p => p.Nome).ToList();
             
             List<ProdutoContainer> produtosHATEOAS = new List<ProdutoContainer>();
             foreach(var produto in produtos)
@@ -114,11 +103,7 @@ namespace projeto.Controllers
         [HttpGet("desc")]
         public IActionResult GetByDesc()
         {
-            var produtos = database.produtos.Where(p => p.Status == true)
-                                            .Include(p => p.Fornecedor)
-                                            .Include(p => p.VendasProdutos)
-                                            .OrderByDescending(p => p.Nome)
-                                            .ToList();
+            var produtos = database.produtos.Where(p => p.Status == true).Include(p => p.Fornecedor).OrderByDescending(p => p.Nome).ToList();
             
             List<ProdutoContainer> produtosHATEOAS = new List<ProdutoContainer>();
             foreach(var produto in produtos)
@@ -143,10 +128,7 @@ namespace projeto.Controllers
         {
             try
             {
-                var produto = database.produtos.Where(p => p.Status == true)
-                                               .Include(p => p.Fornecedor)
-                                               .Include(p => p.VendasProdutos)
-                                               .First(p => p.Nome.ToUpper() == nome.ToUpper());
+                var produto = database.produtos.Where(p => p.Status == true).Include(p => p.Fornecedor).First(p => p.Nome.ToUpper() == nome.ToUpper());
 
                 List<string> formatoLinks = new List<string>();
                 formatoLinks.Add(produto.Id.ToString());
