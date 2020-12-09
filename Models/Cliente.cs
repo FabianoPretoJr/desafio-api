@@ -24,6 +24,7 @@ namespace projeto.Models
         public string Senha { get; set; }
         public string Documento { get; set; }
         public DateTime DataCadastro { get; set; }
+        [JsonIgnore]
         public bool Status { get; set; }
     }
 }

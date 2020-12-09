@@ -151,33 +151,35 @@ namespace projeto.Controllers
         [HttpPost]
         public IActionResult Post([FromBody]FornecedorDTO fornecedorTemp)
         {
-            try
+            if(ModelState.IsValid)
             {
-                if(fornecedorTemp.Nome.Length <= 1)
+                try
+                {
+                    if(!Validadores.ValidarCnpj.IsCnpj(fornecedorTemp.CNPJ))
+                    {
+                        Response.StatusCode = 400;
+                        return new ObjectResult(new {msg = "CNPJ de fornecedor está inválido"});
+                    }
+
+                    Fornecedor fornecedor = new Fornecedor();
+
+                    fornecedor.Nome = fornecedorTemp.Nome;
+                    fornecedor.CNPJ = fornecedorTemp.CNPJ;
+                    fornecedor.Status = true;
+
+                    database.fornecedores.Add(fornecedor);
+                    database.SaveChanges();
+
+                    Response.StatusCode = 201;
+                    return new ObjectResult(new {msg = "Fornecedor criado com sucesso"});
+                }
+                catch(Exception e)
                 {
                     Response.StatusCode = 400;
-                    return new ObjectResult(new {msg = "O nome deve ter mais de um caracter"});
+                    return new ObjectResult(new {msg = "" + e});
                 }
-
-                if(fornecedorTemp.CNPJ.Length != 18)
-                {
-                    Response.StatusCode = 400;
-                    return new ObjectResult(new {msg = "O CNPJ deve ter 18 caracteres"});
-                }
-
-                Fornecedor fornecedor = new Fornecedor();
-
-                fornecedor.Nome = fornecedorTemp.Nome;
-                fornecedor.CNPJ = fornecedorTemp.CNPJ;
-                fornecedor.Status = true;
-
-                database.fornecedores.Add(fornecedor);
-                database.SaveChanges();
-
-                Response.StatusCode = 201;
-                return new ObjectResult("");
             }
-            catch(Exception)
+            else
             {
                 Response.StatusCode = 400;
                 return new ObjectResult(new {msg = "Todos campos devem ser passados"});

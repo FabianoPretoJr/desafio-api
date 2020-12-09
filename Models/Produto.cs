@@ -31,6 +31,7 @@ namespace projeto.Models
         [JsonIgnore]
         public int FornecedorId { get; set; }
         public Fornecedor Fornecedor { get; set; }
+        [JsonIgnore]
         public bool Status { get; set; }
         [JsonIgnore]
         public ICollection<VendaProduto> VendasProdutos { get; set; }

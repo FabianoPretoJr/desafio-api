@@ -152,87 +152,66 @@ namespace projeto.Controllers
         [HttpPost]
         public IActionResult Post([FromBody]ProdutoDTO produtoTemp)
         {
-            try
+            if(ModelState.IsValid)
             {
-                if(produtoTemp.Nome.Length <= 1)
-                {
-                    Response.StatusCode = 400;
-                    return new ObjectResult(new {msg = "O nome deve ter mais de um caracter"});
-                }
-
-                if(produtoTemp.Valor <= 0)
-                {
-                    Response.StatusCode = 400;
-                    return new ObjectResult(new {msg = "O valor do produto deve ser maior do que 0 (zero)"});
-                }
-
-                if(produtoTemp.ValorPromocao <= 0 && produtoTemp.Promocao)
-                {
-                    Response.StatusCode = 400;
-                    return new ObjectResult(new {msg = "O valor da promoção deve ser maior do que 0 (zero)"});
-                }
-
-                if(produtoTemp.Categoria.Length <= 1)
-                {
-                    Response.StatusCode = 400;
-                    return new ObjectResult(new {msg = "A categoria deve ter mais de um caracter"});
-                }
-
-                if(produtoTemp.Imagem.Length <= 1)
-                {
-                    Response.StatusCode = 400;
-                    return new ObjectResult(new {msg = "O link da imagem deve ter mais de um caracter"});
-                }
-
-                if(produtoTemp.Quantidade <= 0)
-                {
-                    Response.StatusCode = 400;
-                    return new ObjectResult(new {msg = "A quantidade deve ser pelo menos maior do que 0 (zero)"});
-                }
-
-                if(produtoTemp.Fornecedor <= 0)
-                {
-                    Response.StatusCode = 404;
-                    return new ObjectResult(new {msg = "Id de fornecedor está inválido"});
-                }
-
                 try
                 {
-                    var idFornecedor = database.fornecedores.First(f => f.Id == produtoTemp.Fornecedor);
 
-                    if(idFornecedor == null)
+                    if(produtoTemp.ValorPromocao <= 0 && produtoTemp.Promocao)
+                    {
+                        Response.StatusCode = 400;
+                        return new ObjectResult(new {msg = "O valor da promoção do produto deve ser maior do que 0"});
+                    }
+
+                    if(produtoTemp.Fornecedor <= 0)
+                    {
+                        Response.StatusCode = 404;
+                        return new ObjectResult(new {msg = "Id de fornecedor está inválido"});
+                    }
+
+                    try
+                    {
+                        var idFornecedor = database.fornecedores.First(f => f.Id == produtoTemp.Fornecedor);
+
+                        if(idFornecedor == null)
+                        {
+                            Response.StatusCode = 400;
+                            return new ObjectResult(new {msg = "Id de fornecedor não encontrado"});
+                        }
+                    }
+                    catch(Exception)
                     {
                         Response.StatusCode = 400;
                         return new ObjectResult(new {msg = "Id de fornecedor não encontrado"});
                     }
+
+                    Produto produto = new Produto();
+                    Random rnd = new Random();
+
+                    produto.Nome = produtoTemp.Nome;
+                    produto.CodigoProduto = rnd.Next(1000, 9999).ToString();
+                    produto.Valor = produtoTemp.Valor;
+                    produto.Promocao = produtoTemp.Promocao;
+                    produto.ValorPromocao = produtoTemp.Promocao ? produtoTemp.ValorPromocao : 0;
+                    produto.Categoria = produtoTemp.Categoria;
+                    produto.Imagem = produtoTemp.Imagem;
+                    produto.Quantidade = produtoTemp.Quantidade;
+                    produto.Fornecedor = database.fornecedores.First(f => f.Id == produtoTemp.Fornecedor);
+                    produto.Status = true;
+
+                    database.produtos.Add(produto);
+                    database.SaveChanges();
+
+                    Response.StatusCode = 201;
+                    return new ObjectResult(new {msg = "Produto criado com sucesso"});
                 }
-                catch(Exception)
+                catch(Exception e)
                 {
                     Response.StatusCode = 400;
-                    return new ObjectResult(new {msg = "Id de fornecedor não encontrado"});
+                    return new ObjectResult(new {msg = "" + e});
                 }
-
-                Produto produto = new Produto();
-                Random rnd = new Random();
-
-                produto.Nome = produtoTemp.Nome;
-                produto.CodigoProduto = rnd.Next(1000, 9999).ToString();
-                produto.Valor = produtoTemp.Valor;
-                produto.Promocao = produtoTemp.Promocao; // Talvez fazer um if pra impedir atribuição de valor ao valorPromocao caso seja false promocao, um ternario resolve
-                produto.ValorPromocao = produtoTemp.ValorPromocao;
-                produto.Categoria = produtoTemp.Categoria;
-                produto.Imagem = produtoTemp.Imagem;
-                produto.Quantidade = produtoTemp.Quantidade;
-                produto.Fornecedor = database.fornecedores.First(f => f.Id == produtoTemp.Fornecedor);
-                produto.Status = true;
-
-                database.produtos.Add(produto);
-                database.SaveChanges();
-
-                Response.StatusCode = 201;
-                return new ObjectResult("");
             }
-            catch(Exception)
+            else
             {
                 Response.StatusCode = 400;
                 return new ObjectResult(new {msg = "Todos campos devem ser passados"});

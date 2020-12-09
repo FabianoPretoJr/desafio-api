@@ -159,52 +159,40 @@ namespace projeto.Controllers
         [HttpPost]
         public IActionResult Post([FromBody]ClienteDTO clienteTemp)
         {
-            try
+            if(ModelState.IsValid)
             {
-                if(clienteTemp.Nome.Length <= 1)
+                try
+                {
+                    if(!Validadores.ValidarCpf.IsCpf(clienteTemp.Documento))
+                    {
+                        Response.StatusCode = 400;
+                        return new ObjectResult(new {msg = "CPF de cliente está inválido"});
+                    }
+
+                    // Validar se email já existe
+
+                    Cliente cliente = new Cliente();
+
+                    cliente.Nome = clienteTemp.Nome;
+                    cliente.Email = clienteTemp.Email;
+                    cliente.Senha = Criptografia.Criptografia.getMdIHash(clienteTemp.Senha);
+                    cliente.Documento = clienteTemp.Documento;
+                    cliente.DataCadastro = DateTime.Now;
+                    cliente.Status = true;
+                    
+                    database.clientes.Add(cliente);
+                    database.SaveChanges();
+
+                    Response.StatusCode = 201;
+                    return new ObjectResult(new {msg = "Cliente criado com sucesso"});
+                }
+                catch(Exception e)
                 {
                     Response.StatusCode = 400;
-                    return new ObjectResult(new {msg = "O nome deve ter mais de um caracter"});
+                    return new ObjectResult(new {msg = "" + e});
                 }
-
-                if(clienteTemp.Email.Length <= 1)
-                {
-                    Response.StatusCode = 400;
-                    return new ObjectResult(new {msg = "O e-mail deve ter mais de um caracter"});
-                }
-                // Validar se está em formato de email
-
-                if(clienteTemp.Senha.Length < 6 || clienteTemp.Senha.Length > 12)
-                {
-                    Response.StatusCode = 400;
-                    return new ObjectResult(new {msg = "A senha deve ter mais de 6 até 12 caracter"});
-                }
-
-                if(clienteTemp.Documento.Length <= 1)
-                {
-                    Response.StatusCode = 400;
-                    return new ObjectResult(new {msg = "O documento deve ter mais de um caracter"});
-                }
-                // Testar validar usando (== null) como condição
-
-                Cliente cliente = new Cliente();
-
-                // Implementar autenticação
-
-                cliente.Nome = clienteTemp.Nome;
-                cliente.Email = clienteTemp.Email;
-                cliente.Senha = Criptografia.Criptografia.getMdIHash(clienteTemp.Senha);
-                cliente.Documento = clienteTemp.Documento;
-                cliente.DataCadastro = DateTime.Now;
-                cliente.Status = true;
-                
-                database.clientes.Add(cliente);
-                database.SaveChanges();
-
-                Response.StatusCode = 201;
-                return new ObjectResult("");
             }
-            catch(Exception)
+            else
             {
                 Response.StatusCode = 400;
                 return new ObjectResult(new {msg = "Todos campos devem ser passados"});
@@ -309,19 +297,19 @@ namespace projeto.Controllers
                     else
                     {
                         Response.StatusCode = 401;
-                        return new ObjectResult("");
+                        return new ObjectResult(new {msg = "Senha incorreta"});
                     }
                 }
                 else
                 {
                     Response.StatusCode = 401;
-                    return new ObjectResult("");
+                    return new ObjectResult(new {msg = "Usuário não encontrado"});
                 }
             }
             catch (Exception)
             {
                 Response.StatusCode = 401;
-                return new ObjectResult("");
+                return new ObjectResult(new {msg = "E-mail não encontrado"});
             }
         }
     }

@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace projeto.Models
 {
     public class Fornecedor
@@ -15,6 +17,7 @@ namespace projeto.Models
         public int Id { get; set; }
         public string Nome { get; set; }
         public string CNPJ { get; set; }
+        [JsonIgnore]
         public bool Status { get; set; }
     }
 }

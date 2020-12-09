@@ -26,6 +26,7 @@ namespace projeto.Models
         public Fornecedor Fornecedor { get; set; }
         public decimal TotalCompra { get; set; }
         public DateTime DataCompra { get; set; }
+        [JsonIgnore]
         public bool Status { get; set; }
         public ICollection<VendaProduto> VendasProdutos { get; set; }
     }
