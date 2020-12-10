@@ -9,7 +9,7 @@ using projeto.Data;
 namespace projeto.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201209234218_AdicionandoEntidades")]
+    [Migration("20201210122428_AdicionandoEntidades")]
     partial class AdicionandoEntidades
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,7 +51,7 @@ namespace projeto.Migrations
                         new
                         {
                             Id = 1,
-                            DataCadastro = new DateTime(2020, 12, 9, 20, 42, 18, 421, DateTimeKind.Local).AddTicks(5089),
+                            DataCadastro = new DateTime(2020, 12, 10, 9, 24, 28, 35, DateTimeKind.Local).AddTicks(4543),
                             Documento = "39727557830",
                             Email = "fabiano@gft.com",
                             Nome = "Fabiano Preto",
@@ -61,7 +61,7 @@ namespace projeto.Migrations
                         new
                         {
                             Id = 2,
-                            DataCadastro = new DateTime(2020, 12, 9, 20, 42, 18, 423, DateTimeKind.Local).AddTicks(540),
+                            DataCadastro = new DateTime(2020, 12, 10, 9, 24, 28, 37, DateTimeKind.Local).AddTicks(898),
                             Documento = "96246712819",
                             Email = "karine@gft.com",
                             Nome = "Karine Martins",
@@ -71,7 +71,7 @@ namespace projeto.Migrations
                         new
                         {
                             Id = 3,
-                            DataCadastro = new DateTime(2020, 12, 9, 20, 42, 18, 423, DateTimeKind.Local).AddTicks(647),
+                            DataCadastro = new DateTime(2020, 12, 10, 9, 24, 28, 37, DateTimeKind.Local).AddTicks(1004),
                             Documento = "18990004888",
                             Email = "felipe@gft.com",
                             Nome = "Felipe Pina",
@@ -81,7 +81,7 @@ namespace projeto.Migrations
                         new
                         {
                             Id = 4,
-                            DataCadastro = new DateTime(2020, 12, 9, 20, 42, 18, 423, DateTimeKind.Local).AddTicks(651),
+                            DataCadastro = new DateTime(2020, 12, 10, 9, 24, 28, 37, DateTimeKind.Local).AddTicks(1008),
                             Documento = "55775371852",
                             Email = "ingrid@gft.com",
                             Nome = "Ingrid Serello",
@@ -91,7 +91,7 @@ namespace projeto.Migrations
                         new
                         {
                             Id = 5,
-                            DataCadastro = new DateTime(2020, 12, 9, 20, 42, 18, 423, DateTimeKind.Local).AddTicks(653),
+                            DataCadastro = new DateTime(2020, 12, 10, 9, 24, 28, 37, DateTimeKind.Local).AddTicks(1010),
                             Documento = "42775181848",
                             Email = "jeziel@gft.com",
                             Nome = "Jeziel Santos",

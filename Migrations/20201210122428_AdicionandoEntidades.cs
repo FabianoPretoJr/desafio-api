@@ -127,11 +127,11 @@ namespace projeto.Migrations
                 columns: new[] { "Id", "DataCadastro", "Documento", "Email", "Nome", "Senha", "Status" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2020, 12, 9, 20, 42, 18, 421, DateTimeKind.Local).AddTicks(5089), "39727557830", "fabiano@gft.com", "Fabiano Preto", "e10adc3949ba59abbe56e057f20f883e", true },
-                    { 2, new DateTime(2020, 12, 9, 20, 42, 18, 423, DateTimeKind.Local).AddTicks(540), "96246712819", "karine@gft.com", "Karine Martins", "e10adc3949ba59abbe56e057f20f883e", true },
-                    { 3, new DateTime(2020, 12, 9, 20, 42, 18, 423, DateTimeKind.Local).AddTicks(647), "18990004888", "felipe@gft.com", "Felipe Pina", "e10adc3949ba59abbe56e057f20f883e", true },
-                    { 4, new DateTime(2020, 12, 9, 20, 42, 18, 423, DateTimeKind.Local).AddTicks(651), "55775371852", "ingrid@gft.com", "Ingrid Serello", "e10adc3949ba59abbe56e057f20f883e", true },
-                    { 5, new DateTime(2020, 12, 9, 20, 42, 18, 423, DateTimeKind.Local).AddTicks(653), "42775181848", "jeziel@gft.com", "Jeziel Santos", "e10adc3949ba59abbe56e057f20f883e", true }
+                    { 1, new DateTime(2020, 12, 10, 9, 24, 28, 35, DateTimeKind.Local).AddTicks(4543), "39727557830", "fabiano@gft.com", "Fabiano Preto", "e10adc3949ba59abbe56e057f20f883e", true },
+                    { 2, new DateTime(2020, 12, 10, 9, 24, 28, 37, DateTimeKind.Local).AddTicks(898), "96246712819", "karine@gft.com", "Karine Martins", "e10adc3949ba59abbe56e057f20f883e", true },
+                    { 3, new DateTime(2020, 12, 10, 9, 24, 28, 37, DateTimeKind.Local).AddTicks(1004), "18990004888", "felipe@gft.com", "Felipe Pina", "e10adc3949ba59abbe56e057f20f883e", true },
+                    { 4, new DateTime(2020, 12, 10, 9, 24, 28, 37, DateTimeKind.Local).AddTicks(1008), "55775371852", "ingrid@gft.com", "Ingrid Serello", "e10adc3949ba59abbe56e057f20f883e", true },
+                    { 5, new DateTime(2020, 12, 10, 9, 24, 28, 37, DateTimeKind.Local).AddTicks(1010), "42775181848", "jeziel@gft.com", "Jeziel Santos", "e10adc3949ba59abbe56e057f20f883e", true }
                 });
 
             migrationBuilder.InsertData(
