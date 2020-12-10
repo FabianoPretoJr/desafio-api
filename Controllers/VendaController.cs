@@ -180,127 +180,135 @@ namespace projeto.Controllers
         [HttpPost]
         public IActionResult Post([FromBody]VendaDTO vendaTemp)
         {
-            try
+            if(ModelState.IsValid)
             {
-                decimal totalCompra = 0;
-
-                if(vendaTemp.Fornecedor <= 0)
-                {
-                    Response.StatusCode = 404;
-                    return new ObjectResult(new {msg = "Id de fornecedor está inválido"});
-                }
                 try
                 {
-                    var idFornecedor = database.fornecedores.First(f => f.Id == vendaTemp.Fornecedor);
+                    decimal totalCompra = 0;
 
-                    if(idFornecedor == null)
-                    {
-                        Response.StatusCode = 400;
-                        return new ObjectResult(new {msg = "Id de fornecedor não encontrado"});
-                    }
-                }
-                catch(Exception)
-                {
-                    Response.StatusCode = 400;
-                    return new ObjectResult(new {msg = "Id de fornecedor não encontrado"});
-                }
-
-                if(vendaTemp.Cliente <= 0)
-                {
-                    Response.StatusCode = 404;
-                    return new ObjectResult(new {msg = "Id de cliente está inválido"});
-                }
-                try
-                {
-                    var idCliente = database.clientes.First(c => c.Id == vendaTemp.Cliente);
-
-                    if(idCliente == null)
-                    {
-                        Response.StatusCode = 400;
-                        return new ObjectResult(new {msg = "Id de cliente não encontrado"});
-                    }
-                }
-                catch(Exception)
-                {
-                    Response.StatusCode = 400;
-                    return new ObjectResult(new {msg = "Id de cliente não encontrado"});
-                }
-
-                foreach(var produto in vendaTemp.Produtos)
-                {
-                    if(produto <= 0)
+                    if(vendaTemp.Fornecedor <= 0)
                     {
                         Response.StatusCode = 404;
-                        return new ObjectResult(new {msg = "Id de produto está inválido"}); // Trabalhar pra informar qual Id está errado
+                        return new ObjectResult(new {msg = "Id de fornecedor está inválido"});
                     }
                     try
                     {
-                        var idProduto = database.produtos.First(p => p.Id == produto);
                         var idFornecedor = database.fornecedores.First(f => f.Id == vendaTemp.Fornecedor);
 
-                        if(idProduto == null)
+                        if(idFornecedor == null)
                         {
                             Response.StatusCode = 400;
-                            return new ObjectResult(new {msg = "Id de produto não encontrado"}); // Trabalhar pra informar qual Id está errado
-                        }
-
-                        if(idProduto.Quantidade <= 0)
-                        {
-                            Response.StatusCode = 400;
-                            return new ObjectResult(new {msg = "Quantidade insuficiente desse produto em estoque"}); // falar produto é
-                        }
-
-                        if(idProduto.Fornecedor != idFornecedor)
-                        {
-                            Response.StatusCode = 400;
-                            return new ObjectResult(new {msg = "Produto: nomeDele não pertence ao fornecedor informado"});
+                            return new ObjectResult(new {msg = "Id de fornecedor não encontrado"});
                         }
                     }
                     catch(Exception)
                     {
                         Response.StatusCode = 400;
-                        return new ObjectResult(new {msg = "Id de produto não encontrado"}); // Trabalhar pra informar qual Id está errado
+                        return new ObjectResult(new {msg = "Id de fornecedor não encontrado"});
                     }
 
-                    var pro = database.produtos.First(p => p.Id == produto);
-                    totalCompra = Convert.ToBoolean(pro.Promocao) ? totalCompra + Convert.ToDecimal(pro.ValorPromocao) : totalCompra + pro.Valor;
-                }
+                    if(vendaTemp.Cliente <= 0)
+                    {
+                        Response.StatusCode = 404;
+                        return new ObjectResult(new {msg = "Id de cliente está inválido"});
+                    }
+                    try
+                    {
+                        var idCliente = database.clientes.First(c => c.Id == vendaTemp.Cliente);
 
-                if(vendaTemp.DataCompra.Length != 10)
-                {
-                    Response.StatusCode = 404;
-                    return new ObjectResult(new {msg = "Data está em formato errado"});
-                }
+                        if(idCliente == null)
+                        {
+                            Response.StatusCode = 400;
+                            return new ObjectResult(new {msg = "Id de cliente não encontrado"});
+                        }
+                    }
+                    catch(Exception)
+                    {
+                        Response.StatusCode = 400;
+                        return new ObjectResult(new {msg = "Id de cliente não encontrado"});
+                    }
 
-                Venda venda = new Venda();
+                    if(vendaTemp.Produtos.Count == 0)
+                    {
+                        Response.StatusCode = 400;
+                        return new ObjectResult(new {msg = "Necessário informar pelo menos 1 produto"});
+                    }
 
-                venda.Cliente = database.clientes.First(c => c.Id == vendaTemp.Cliente);
-                venda.Fornecedor = database.fornecedores.First(f => f.Id == vendaTemp.Fornecedor);
-                venda.DataCompra = DateTime.ParseExact(vendaTemp.DataCompra, "dd/MM/yyyy", null);
-                venda.TotalCompra = totalCompra;
-                venda.Status = true;
-                
-                database.venda.Add(venda);
-                database.SaveChanges();
+                    foreach(var produto in vendaTemp.Produtos)
+                    {
+                        if(produto <= 0)
+                        {
+                            Response.StatusCode = 404;
+                            return new ObjectResult(new {msg = "Id " + produto + " de produto está inválido"});
+                        }
+                        try
+                        {
+                            var idProduto = database.produtos.First(p => p.Id == produto);
+                            var idFornecedor = database.fornecedores.First(f => f.Id == vendaTemp.Fornecedor);
 
-                foreach (var produto in vendaTemp.Produtos)
-                {
-                    VendaProduto vp = new VendaProduto();
+                            if(idProduto == null)
+                            {
+                                Response.StatusCode = 400;
+                                return new ObjectResult(new {msg = "Id " + produto + " de produto não encontrado"});
+                            }
 
-                    vp.Venda = database.venda.First(v => v.Id == venda.Id);
-                    vp.Produto = database.produtos.First(p => p.Id == produto);
+                            if(idProduto.Quantidade <= 0)
+                            {
+                                Response.StatusCode = 400;
+                                return new ObjectResult(new {msg = "Quantidade insuficiente do produto em estoque, ID: " + produto});
+                            }
 
-                    var prod = database.produtos.First(p => p.Id == produto);
-                    prod.Quantidade = prod.Quantidade - 1;
+                            if(idProduto.Fornecedor != idFornecedor)
+                            {
+                                Response.StatusCode = 400;
+                                return new ObjectResult(new {msg = "Produto ID " + produto + " não pertence ao fornecedor informado"});
+                            }
+                        }
+                        catch(Exception)
+                        {
+                            Response.StatusCode = 400;
+                            return new ObjectResult(new {msg = "Id " + produto + " de produto não encontrado"});
+                        }
 
-                    database.vendasProdutos.Add(vp);
+                        var pro = database.produtos.First(p => p.Id == produto);
+                        totalCompra = Convert.ToBoolean(pro.Promocao) ? totalCompra + Convert.ToDecimal(pro.ValorPromocao) : totalCompra + pro.Valor;
+                    }
+
+                    Venda venda = new Venda();
+
+                    venda.Cliente = database.clientes.First(c => c.Id == vendaTemp.Cliente);
+                    venda.Fornecedor = database.fornecedores.First(f => f.Id == vendaTemp.Fornecedor);
+                    venda.DataCompra = DateTime.ParseExact(vendaTemp.DataCompra, "dd/MM/yyyy", null);
+                    venda.TotalCompra = totalCompra;
+                    venda.Status = true;
+                    
+                    database.venda.Add(venda);
                     database.SaveChanges();
-                }
 
-                Response.StatusCode = 201;
-                return new ObjectResult("");
+                    foreach (var produto in vendaTemp.Produtos)
+                    {
+                        VendaProduto vp = new VendaProduto();
+
+                        vp.Venda = database.venda.First(v => v.Id == venda.Id);
+                        vp.Produto = database.produtos.First(p => p.Id == produto);
+
+                        var prod = database.produtos.First(p => p.Id == produto);
+                        prod.Quantidade = prod.Quantidade - 1;
+
+                        database.vendasProdutos.Add(vp);
+                        database.SaveChanges();
+                    }
+
+                    Response.StatusCode = 201;
+                    return new ObjectResult(new {msg = "Venda criada com sucesso"});
+                }
+                catch(Exception e)
+                {
+                    Response.StatusCode = 400;
+                    return new ObjectResult(new {msg = "" + e});
+                }
             }
-            catch(Exception)
+            else
             {
                 Response.StatusCode = 400;
                 return new ObjectResult(new {msg = "Todos campos devem ser passados"});
@@ -308,7 +316,7 @@ namespace projeto.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]VendaDTO vendaTemp)
+        public IActionResult Put(int id, [FromBody]VendaPutDTO vendaTemp)
         {
             if(id > 0)
             {
@@ -320,7 +328,7 @@ namespace projeto.Controllers
                     if(venda != null)
                     {
                         venda.Cliente = vendaTemp.Cliente > 0 ? database.clientes.First(c => c.Id == vendaTemp.Cliente) : venda.Cliente;
-                        venda.DataCompra = vendaTemp.DataCompra != null ? DateTime.ParseExact(vendaTemp.DataCompra, "dd/MM/yyyy", null) : venda.DataCompra;
+                        venda.DataCompra = vendaTemp.DataCompra != null || vendaTemp.DataCompra == "" ? DateTime.ParseExact(vendaTemp.DataCompra, "dd/MM/yyyy", null) : venda.DataCompra;
 
                         if(vendaTemp.Produtos != null)
                         {
@@ -329,7 +337,7 @@ namespace projeto.Controllers
                                 if(produto <= 0)
                                 {
                                     Response.StatusCode = 404;
-                                    return new ObjectResult(new {msg = "Id de produto está inválido"}); // Trabalhar pra informar qual Id está errado
+                                    return new ObjectResult(new {msg = "Id " + produto + " de produto está inválido"});
                                 }
                                 try
                                 {
@@ -338,25 +346,25 @@ namespace projeto.Controllers
                                     if(idProduto == null)
                                     {
                                         Response.StatusCode = 400;
-                                        return new ObjectResult(new {msg = "Id de produto não encontrado"}); // Trabalhar pra informar qual Id está errado
+                                        return new ObjectResult(new {msg = "Id " + produto + "  de produto não encontrado"});
                                     }
 
                                     if(idProduto.Quantidade <= 0)
                                     {
                                         Response.StatusCode = 400;
-                                        return new ObjectResult(new {msg = "Quantidade insuficiente desse produto em estoque"}); // falar produto é
+                                        return new ObjectResult(new {msg = "Quantidade insuficiente desse produto em estoque, ID: " + produto});
                                     }
 
                                     if(idProduto.Fornecedor.Id != vendaTemp.Fornecedor)
                                     {
                                         Response.StatusCode = 400;
-                                        return new ObjectResult(new {msg = "Produto: nomeDele não pertence ao fornecedor dessa venda"});
+                                        return new ObjectResult(new {msg = "Produto ID " + produto + " não pertence ao fornecedor informado"});
                                     }
                                 }
                                 catch(Exception)
                                 {
                                     Response.StatusCode = 400;
-                                    return new ObjectResult(new {msg = "Id de produto não encontrado"}); // Trabalhar pra informar qual Id está errado
+                                    return new ObjectResult(new {msg = "Id " + produto + " de produto não encontrado"});
                                 }
                                 var pro = database.produtos.First(p => p.Id == produto);
                                 totalCompra = Convert.ToBoolean(pro.Promocao) ? totalCompra + Convert.ToDecimal(pro.ValorPromocao) : totalCompra + pro.Valor;
@@ -390,7 +398,7 @@ namespace projeto.Controllers
                             }
                         }
 
-                        return Ok();
+                        return Ok(new {msg = "Venda alterada com sucesso"});
                     }
                     else
                     {
@@ -398,10 +406,10 @@ namespace projeto.Controllers
                         return new ObjectResult(new {msg = "Venda não encontrada"});
                     }
                 }
-                catch(Exception)
+                catch(Exception e)
                 {
                     Response.StatusCode = 400;
-                    return new ObjectResult(new {msg = "Venda não encontrada"});
+                    return new ObjectResult(new {msg = "" + e});
                 }
             }
             else

@@ -219,10 +219,16 @@ namespace projeto.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]ProdutoDTO produtoTemp)
+        public IActionResult Put(int id, [FromBody]ProdutoPutDTO produtoTemp)
         {
             if(id > 0)
             {
+                if(produtoTemp.ValorPromocao <= 0 && produtoTemp.Promocao)
+                {
+                    Response.StatusCode = 400;
+                    return new ObjectResult(new {msg = "O valor da promoção do produto deve ser maior do que 0"});
+                }
+
                 try
                 {
                     var prod = database.produtos.First(p => p.Id == id);
@@ -239,7 +245,7 @@ namespace projeto.Controllers
                         prod.Fornecedor = produtoTemp.Fornecedor > 0 ? database.fornecedores.First(f => f.Id == produtoTemp.Fornecedor) : prod.Fornecedor;
                         database.SaveChanges();
 
-                        return Ok();
+                        return Ok(new {msg = "Produto alterado com sucesso"});
                     }
                     else
                     {
@@ -247,10 +253,10 @@ namespace projeto.Controllers
                         return new ObjectResult(new {msg = "Produto não encontrado"});
                     }
                 }
-                catch(Exception)
+                catch(Exception e)
                 {
                     Response.StatusCode = 400;
-                    return new ObjectResult(new {msg = "Produto não encontrado"});
+                    return new ObjectResult(new {msg = "" + e});
                 }
             }
             else

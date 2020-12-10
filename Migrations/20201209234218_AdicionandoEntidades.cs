@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace projeto.Migrations
 {
-    public partial class AdiconandoEntidades : Migration
+    public partial class AdicionandoEntidades : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -127,11 +127,11 @@ namespace projeto.Migrations
                 columns: new[] { "Id", "DataCadastro", "Documento", "Email", "Nome", "Senha", "Status" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2020, 12, 8, 10, 23, 46, 399, DateTimeKind.Local).AddTicks(2715), "12345678956", "fabiano@gft.com", "Fabiano Preto", "e10adc3949ba59abbe56e057f20f883e", true },
-                    { 2, new DateTime(2020, 12, 8, 10, 23, 46, 401, DateTimeKind.Local).AddTicks(1874), "96531264962", "karine@gft.com", "Karine Martins", "e10adc3949ba59abbe56e057f20f883e", true },
-                    { 3, new DateTime(2020, 12, 8, 10, 23, 46, 401, DateTimeKind.Local).AddTicks(2004), "84216596542", "felipe@gft.com", "Felipe Pina", "e10adc3949ba59abbe56e057f20f883e", true },
-                    { 4, new DateTime(2020, 12, 8, 10, 23, 46, 401, DateTimeKind.Local).AddTicks(2009), "36492516953", "ingrid@gft.com", "Ingrid Serello", "e10adc3949ba59abbe56e057f20f883e", true },
-                    { 5, new DateTime(2020, 12, 8, 10, 23, 46, 401, DateTimeKind.Local).AddTicks(2011), "96385274145", "jeziel@gft.com", "Jeziel Santos", "e10adc3949ba59abbe56e057f20f883e", true }
+                    { 1, new DateTime(2020, 12, 9, 20, 42, 18, 421, DateTimeKind.Local).AddTicks(5089), "39727557830", "fabiano@gft.com", "Fabiano Preto", "e10adc3949ba59abbe56e057f20f883e", true },
+                    { 2, new DateTime(2020, 12, 9, 20, 42, 18, 423, DateTimeKind.Local).AddTicks(540), "96246712819", "karine@gft.com", "Karine Martins", "e10adc3949ba59abbe56e057f20f883e", true },
+                    { 3, new DateTime(2020, 12, 9, 20, 42, 18, 423, DateTimeKind.Local).AddTicks(647), "18990004888", "felipe@gft.com", "Felipe Pina", "e10adc3949ba59abbe56e057f20f883e", true },
+                    { 4, new DateTime(2020, 12, 9, 20, 42, 18, 423, DateTimeKind.Local).AddTicks(651), "55775371852", "ingrid@gft.com", "Ingrid Serello", "e10adc3949ba59abbe56e057f20f883e", true },
+                    { 5, new DateTime(2020, 12, 9, 20, 42, 18, 423, DateTimeKind.Local).AddTicks(653), "42775181848", "jeziel@gft.com", "Jeziel Santos", "e10adc3949ba59abbe56e057f20f883e", true }
                 });
 
             migrationBuilder.InsertData(
@@ -139,11 +139,11 @@ namespace projeto.Migrations
                 columns: new[] { "Id", "CNPJ", "Nome", "Status" },
                 values: new object[,]
                 {
-                    { 1, "12.362.612/4568.65", "Amazon", true },
-                    { 2, "62.456.852/8745.63", "Dell", true },
-                    { 3, "23.451.895/9512.62", "Xiaomi", true },
-                    { 4, "94.845.965/6324.84", "MaxRacer", true },
-                    { 5, "74.854.451/5698.32", "Motospeed", true }
+                    { 1, "42378548000110", "Amazon", true },
+                    { 2, "91932580000100", "Dell", true },
+                    { 3, "35834617000197", "Xiaomi", true },
+                    { 4, "14813497000171", "MaxRacer", true },
+                    { 5, "30119402000170", "Motospeed", true }
                 });
 
             migrationBuilder.InsertData(
@@ -164,9 +164,9 @@ namespace projeto.Migrations
                 columns: new[] { "Id", "ClienteId", "DataCompra", "FornecedorId", "Status", "TotalCompra" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2020, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, true, 1750m },
+                    { 1, 1, new DateTime(2020, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, true, 730m },
                     { 2, 2, new DateTime(2020, 12, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, true, 3500m },
-                    { 3, 4, new DateTime(2020, 12, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, true, 1500m }
+                    { 3, 4, new DateTime(2020, 12, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, true, 1300m }
                 });
 
             migrationBuilder.InsertData(

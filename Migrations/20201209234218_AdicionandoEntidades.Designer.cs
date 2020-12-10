@@ -9,8 +9,8 @@ using projeto.Data;
 namespace projeto.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201208132346_AdiconandoEntidades")]
-    partial class AdiconandoEntidades
+    [Migration("20201209234218_AdicionandoEntidades")]
+    partial class AdicionandoEntidades
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -51,8 +51,8 @@ namespace projeto.Migrations
                         new
                         {
                             Id = 1,
-                            DataCadastro = new DateTime(2020, 12, 8, 10, 23, 46, 399, DateTimeKind.Local).AddTicks(2715),
-                            Documento = "12345678956",
+                            DataCadastro = new DateTime(2020, 12, 9, 20, 42, 18, 421, DateTimeKind.Local).AddTicks(5089),
+                            Documento = "39727557830",
                             Email = "fabiano@gft.com",
                             Nome = "Fabiano Preto",
                             Senha = "e10adc3949ba59abbe56e057f20f883e",
@@ -61,8 +61,8 @@ namespace projeto.Migrations
                         new
                         {
                             Id = 2,
-                            DataCadastro = new DateTime(2020, 12, 8, 10, 23, 46, 401, DateTimeKind.Local).AddTicks(1874),
-                            Documento = "96531264962",
+                            DataCadastro = new DateTime(2020, 12, 9, 20, 42, 18, 423, DateTimeKind.Local).AddTicks(540),
+                            Documento = "96246712819",
                             Email = "karine@gft.com",
                             Nome = "Karine Martins",
                             Senha = "e10adc3949ba59abbe56e057f20f883e",
@@ -71,8 +71,8 @@ namespace projeto.Migrations
                         new
                         {
                             Id = 3,
-                            DataCadastro = new DateTime(2020, 12, 8, 10, 23, 46, 401, DateTimeKind.Local).AddTicks(2004),
-                            Documento = "84216596542",
+                            DataCadastro = new DateTime(2020, 12, 9, 20, 42, 18, 423, DateTimeKind.Local).AddTicks(647),
+                            Documento = "18990004888",
                             Email = "felipe@gft.com",
                             Nome = "Felipe Pina",
                             Senha = "e10adc3949ba59abbe56e057f20f883e",
@@ -81,8 +81,8 @@ namespace projeto.Migrations
                         new
                         {
                             Id = 4,
-                            DataCadastro = new DateTime(2020, 12, 8, 10, 23, 46, 401, DateTimeKind.Local).AddTicks(2009),
-                            Documento = "36492516953",
+                            DataCadastro = new DateTime(2020, 12, 9, 20, 42, 18, 423, DateTimeKind.Local).AddTicks(651),
+                            Documento = "55775371852",
                             Email = "ingrid@gft.com",
                             Nome = "Ingrid Serello",
                             Senha = "e10adc3949ba59abbe56e057f20f883e",
@@ -91,8 +91,8 @@ namespace projeto.Migrations
                         new
                         {
                             Id = 5,
-                            DataCadastro = new DateTime(2020, 12, 8, 10, 23, 46, 401, DateTimeKind.Local).AddTicks(2011),
-                            Documento = "96385274145",
+                            DataCadastro = new DateTime(2020, 12, 9, 20, 42, 18, 423, DateTimeKind.Local).AddTicks(653),
+                            Documento = "42775181848",
                             Email = "jeziel@gft.com",
                             Nome = "Jeziel Santos",
                             Senha = "e10adc3949ba59abbe56e057f20f883e",
@@ -123,35 +123,35 @@ namespace projeto.Migrations
                         new
                         {
                             Id = 1,
-                            CNPJ = "12.362.612/4568.65",
+                            CNPJ = "42378548000110",
                             Nome = "Amazon",
                             Status = true
                         },
                         new
                         {
                             Id = 2,
-                            CNPJ = "62.456.852/8745.63",
+                            CNPJ = "91932580000100",
                             Nome = "Dell",
                             Status = true
                         },
                         new
                         {
                             Id = 3,
-                            CNPJ = "23.451.895/9512.62",
+                            CNPJ = "35834617000197",
                             Nome = "Xiaomi",
                             Status = true
                         },
                         new
                         {
                             Id = 4,
-                            CNPJ = "94.845.965/6324.84",
+                            CNPJ = "14813497000171",
                             Nome = "MaxRacer",
                             Status = true
                         },
                         new
                         {
                             Id = 5,
-                            CNPJ = "74.854.451/5698.32",
+                            CNPJ = "30119402000170",
                             Nome = "Motospeed",
                             Status = true
                         });
@@ -323,7 +323,7 @@ namespace projeto.Migrations
                             DataCompra = new DateTime(2020, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FornecedorId = 1,
                             Status = true,
-                            TotalCompra = 1750m
+                            TotalCompra = 730m
                         },
                         new
                         {
@@ -341,7 +341,7 @@ namespace projeto.Migrations
                             DataCompra = new DateTime(2020, 12, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FornecedorId = 4,
                             Status = true,
-                            TotalCompra = 1500m
+                            TotalCompra = 1300m
                         });
                 });
 

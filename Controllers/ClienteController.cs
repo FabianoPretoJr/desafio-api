@@ -201,23 +201,32 @@ namespace projeto.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
-        public IActionResult Put(int id, [FromBody]ClienteDTO clienteTemp)
+        public IActionResult Put(int id, [FromBody]ClientePutDTO clienteTemp)
         {
             if(id > 0)
             {
                 try
                 {
+                    if(clienteTemp.Documento != null)
+                    {
+                        if(!Validadores.ValidarCpf.IsCpf(clienteTemp.Documento))
+                        {
+                            Response.StatusCode = 400;
+                            return new ObjectResult(new {msg = "CPF de cliente está inválido"});
+                        }
+                    }
+
                     var cli = database.clientes.First(c => c.Id == id);
 
                     if(cli != null)
                     {
                         cli.Nome = clienteTemp.Nome != null ? clienteTemp.Nome : cli.Nome;
                         cli.Email = clienteTemp.Email != null ? clienteTemp.Email : cli.Email;
-                        cli.Senha = clienteTemp.Senha != null ? clienteTemp.Senha : cli.Senha;
+                        cli.Senha = clienteTemp.Senha != null ? Criptografia.Criptografia.getMdIHash(clienteTemp.Senha) : cli.Senha;
                         cli.Documento = clienteTemp.Documento != null ? clienteTemp.Documento : cli.Documento;
                         database.SaveChanges();
 
-                        return Ok();
+                        return Ok(new {msg = "Cliente alterado com sucesso"});
                     }
                     else
                     {
@@ -225,10 +234,10 @@ namespace projeto.Controllers
                         return new ObjectResult(new {msg = "Cliente não encontrado"});
                     }
                 }
-                catch(Exception)
+                catch(Exception e)
                 {
                     Response.StatusCode = 400;
-                    return new ObjectResult(new {msg = "Cliente não encontrado"});
+                    return new ObjectResult(new {msg = "" + e});
                 }
             }
             else

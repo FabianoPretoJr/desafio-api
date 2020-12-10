@@ -187,12 +187,21 @@ namespace projeto.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]FornecedorDTO fornecedorTemp)
+        public IActionResult Put(int id, [FromBody]FornecedorPutDTO fornecedorTemp)
         {
             if(id > 0)
             {
                 try
                 {
+                    if(fornecedorTemp.CNPJ != null)
+                    {
+                        if(!Validadores.ValidarCnpj.IsCnpj(fornecedorTemp.CNPJ))
+                        {
+                            Response.StatusCode = 400;
+                            return new ObjectResult(new {msg = "CNPJ de fornecedor está inválido"});
+                        }
+                    }
+
                     var forne = database.fornecedores.First(f => f.Id == id);
 
                     if(forne != null)
@@ -201,7 +210,7 @@ namespace projeto.Controllers
                         forne.CNPJ = fornecedorTemp.CNPJ != null ? fornecedorTemp.CNPJ : forne.CNPJ;
                         database.SaveChanges();
 
-                        return Ok();
+                        return Ok(new {msg = "Fornecedor alterado com sucesso"});
                     }
                     else
                     {
@@ -209,10 +218,10 @@ namespace projeto.Controllers
                         return new ObjectResult(new {msg = "Fornecedor não encontrado"});
                     }
                 }
-                catch(Exception)
+                catch(Exception e)
                 {
                     Response.StatusCode = 400;
-                    return new ObjectResult(new {msg = "Fornecedor não encontrado"});
+                    return new ObjectResult(new {msg = "" + e});
                 }
             }
             else
