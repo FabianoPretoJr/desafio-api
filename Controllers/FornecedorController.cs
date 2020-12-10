@@ -161,6 +161,18 @@ namespace projeto.Controllers
                         return new ObjectResult(new {msg = "CNPJ de fornecedor está inválido"});
                     }
 
+                    try
+                    {
+                        var forneCNPJ = database.fornecedores.Where(f => f.Status == true).First(c => c.CNPJ == fornecedorTemp.CNPJ);
+
+                        if(forneCNPJ != null)
+                        {
+                            Response.StatusCode = 400;
+                            return new ObjectResult(new {msg = "CNPJ já cadastrado"});
+                        }
+                    }
+                    catch(Exception){}
+
                     Fornecedor fornecedor = new Fornecedor();
 
                     fornecedor.Nome = fornecedorTemp.Nome;
@@ -201,6 +213,18 @@ namespace projeto.Controllers
                             return new ObjectResult(new {msg = "CNPJ de fornecedor está inválido"});
                         }
                     }
+
+                    try
+                    {
+                        var forneCNPJ = database.fornecedores.Where(f => f.Status == true).First(f => f.CNPJ == fornecedorTemp.CNPJ);
+
+                        if(forneCNPJ != null)
+                        {
+                            Response.StatusCode = 400;
+                            return new ObjectResult(new {msg = "CNPJ já cadastrado"});
+                        }
+                    }
+                    catch(Exception){}
 
                     var forne = database.fornecedores.First(f => f.Id == id);
 

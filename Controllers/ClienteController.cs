@@ -169,7 +169,28 @@ namespace projeto.Controllers
                         return new ObjectResult(new {msg = "CPF de cliente está inválido"});
                     }
 
-                    // Validar se email já existe
+                    try
+                    {
+                        var cliCPF = database.clientes.Where(c => c.Status == true).First(c => c.Documento == clienteTemp.Documento);
+
+                        if(cliCPF != null)
+                        {
+                            Response.StatusCode = 400;
+                            return new ObjectResult(new {msg = "Documento já cadastrado"});
+                        }
+                    }
+                    catch(Exception){}
+                    try
+                    {
+                        var cliEmail = database.clientes.Where(c => c.Status == true).First(c => c.Email == clienteTemp.Email);
+
+                        if(cliEmail != null)
+                        {
+                            Response.StatusCode = 400;
+                            return new ObjectResult(new {msg = "E-mail já cadastrado"});
+                        }
+                    }
+                    catch(Exception){}
 
                     Cliente cliente = new Cliente();
 
@@ -215,6 +236,29 @@ namespace projeto.Controllers
                             return new ObjectResult(new {msg = "CPF de cliente está inválido"});
                         }
                     }
+
+                    try
+                    {
+                        var cliCPF = database.clientes.Where(c => c.Status == true).First(c => c.Documento == clienteTemp.Documento);
+
+                        if(cliCPF != null)
+                        {
+                            Response.StatusCode = 400;
+                            return new ObjectResult(new {msg = "Documento já cadastrado"});
+                        }
+                    }
+                    catch(Exception){}
+                    try
+                    {
+                        var cliEmail = database.clientes.Where(c => c.Status == true).First(c => c.Email == clienteTemp.Email);
+
+                        if(cliEmail != null)
+                        {
+                            Response.StatusCode = 400;
+                            return new ObjectResult(new {msg = "E-mail já cadastrado"});
+                        }
+                    }
+                    catch(Exception){}
 
                     var cli = database.clientes.First(c => c.Id == id);
 
@@ -269,10 +313,6 @@ namespace projeto.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] CredenciaisDTO credenciais)
         {
-            // Buscar um usuário por E-mail
-            // Verificar se a senha está correta
-            // Gerar um token JWT e retornar esse token para o usuário
-
             try
             {
                 Cliente cliente = database.clientes.First(u => u.Email.Equals(credenciais.Email));
