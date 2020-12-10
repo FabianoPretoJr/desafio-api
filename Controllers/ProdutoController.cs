@@ -271,11 +271,11 @@ namespace projeto.Controllers
         {
             try
             {
-                var produto = database.produtos.First(p => p.Id == id);
+                var produto = database.produtos.Where(p => p.Status == true).First(p => p.Id == id);
                 produto.Status = false;
                 database.SaveChanges();
 
-                return Ok();
+                return Ok(new {msg = "Produto deletado com sucesso"});
             }
             catch(Exception)
             {

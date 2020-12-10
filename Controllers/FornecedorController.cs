@@ -236,11 +236,11 @@ namespace projeto.Controllers
         {
             try
             {
-                var fornecedor = database.fornecedores.First(f => f.Id == id);
+                var fornecedor = database.fornecedores.Where(f => f.Status == true).First(f => f.Id == id);
                 fornecedor.Status = false;
                 database.SaveChanges();
 
-                return Ok();
+                return Ok(new {msg = "Fornecedor deletado com sucesso"});
             }
             catch(Exception)
             {

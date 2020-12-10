@@ -427,11 +427,11 @@ namespace projeto.Controllers
                 var vpAntigos = database.vendasProdutos.Where(vp => vp.Venda.Id == id).ToList();
                 database.vendasProdutos.RemoveRange(vpAntigos);
 
-                var venda = database.venda.First(v => v.Id == id);
+                var venda = database.venda.Where(v => v.Status == true).First(v => v.Id == id);
                 venda.Status = false;
                 database.SaveChanges();
 
-                return Ok();
+                return Ok(new {msg = "Venda deletada com sucesso"});
             }
             catch(Exception)
             {

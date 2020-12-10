@@ -253,11 +253,11 @@ namespace projeto.Controllers
         {
             try
             {
-                var cliente = database.clientes.First(c => c.Id == id);
+                var cliente = database.clientes.Where(c => c.Status == true).First(c => c.Id == id);
                 cliente.Status = false;
                 database.SaveChanges();
 
-                return Ok();
+                return Ok(new {msg = "Cliente deletado com sucesso"});
             }
             catch(Exception)
             {  
