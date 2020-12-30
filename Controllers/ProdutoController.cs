@@ -13,7 +13,6 @@ namespace projeto.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
     public class ProdutoController : ControllerBase
     {
         private readonly ApplicationDbContext database;
@@ -150,6 +149,7 @@ namespace projeto.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult Post([FromBody]ProdutoDTO produtoTemp)
         {
             if(ModelState.IsValid)
@@ -219,6 +219,7 @@ namespace projeto.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Put(int id, [FromBody]ProdutoPutDTO produtoTemp)
         {
             if(id > 0)
@@ -267,6 +268,7 @@ namespace projeto.Controllers
         } 
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             try
